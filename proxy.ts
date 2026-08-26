@@ -1,15 +1,14 @@
-import { auth } from '@/lib/auth/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
-/**
- * Protect account routes only.
- * OAuth session finalization is handled by:
- * - cookies.sameSite: 'lax' (lib/auth/server.ts)
- * - SessionRefresh client component (exchanges neon_auth_session_verifier)
- */
-export default auth.middleware({
-  loginUrl: '/auth/sign-in',
-});
+export default clerkMiddleware();
 
 export const config = {
-  matcher: ['/account/:path*'],
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for Clerk's auto-proxy path
+    '/__clerk/:path*',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 };

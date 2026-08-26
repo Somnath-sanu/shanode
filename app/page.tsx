@@ -1,38 +1,39 @@
-import { auth } from "@/lib/auth/server"
-import { signOut } from "@/app/auth/actions"
+"use client"
+
 import { GitHubSignInButton } from "@/components/github-sign-in-button"
 import Image from "next/image"
+import { useClerk, useUser } from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
 
-export const dynamic = "force-dynamic"
+export default function Page() {
+  const clerk = useClerk()
+  const { user, isSignedIn, isLoaded } = useUser()
 
-export default async function HomePage() {
-  const { data: session } = await auth.getSession()
-
-  if (session?.user) {
+  if (isSignedIn && isLoaded && user) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center bg-gray-950 px-4 text-white">
         <div className="w-full max-w-md space-y-6 rounded-2xl border border-gray-800 bg-gray-900/80 p-8 shadow-2xl backdrop-blur-xl">
           <div className="flex flex-col items-center text-center">
-            {session.user.image ? (
+            {user.hasImage ? (
               <Image
-                src={session.user.image}
-                alt={session.user.name || "User avatar"}
+                src={user.imageUrl}
+                alt={user.fullName || "User avatar"}
                 width={80}
                 height={80}
                 className="h-20 w-20 rounded-full border-2 border-indigo-500 shadow-md"
               />
             ) : (
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-600 text-2xl font-bold text-white shadow-md">
-                {session.user.name?.[0]?.toUpperCase() ||
-                  session.user.email?.[0]?.toUpperCase() ||
-                  "U"}
+                {user.firstName?.[0]?.toUpperCase() || "U"}
               </div>
             )}
 
             <h1 className="mt-4 text-2xl font-bold tracking-tight">
-              Welcome, {session.user.name || "Developer"}!
+              Welcome, {user.firstName || "Developer"}!
             </h1>
-            <p className="mt-1 text-sm text-gray-400">{session.user.email}</p>
+            <p className="mt-1 text-sm text-gray-400">
+              {user.emailAddresses[0].emailAddress}
+            </p>
           </div>
 
           <div className="rounded-xl border border-gray-800 bg-gray-950/60 p-4 text-sm text-gray-300">
@@ -45,20 +46,17 @@ export default async function HomePage() {
             </div>
             <div className="flex justify-between py-1">
               <span className="text-gray-500">User ID</span>
-              <span className="font-mono text-xs text-gray-400">
-                {session.user.id}
-              </span>
+              <span className="font-mono text-xs text-gray-400">{user.id}</span>
             </div>
           </div>
 
-          <form action={signOut}>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-xl border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
-            >
-              Sign out
-            </button>
-          </form>
+          <Button
+            type="submit"
+            className="flex w-full justify-center rounded-xl border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+            onClick={() => clerk.signOut()}
+          >
+            Sign out
+          </Button>
         </div>
       </main>
     )
@@ -83,8 +81,11 @@ export default async function HomePage() {
         </div>
 
         <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <GitHubSignInButton provider="google" />
-          <GitHubSignInButton provider="github" />
+          <GitHubSignInButton
+            provider="github"
+            onClick={() => clerk.openSignIn({})}
+            isLoaded={isLoaded}
+          />
         </div>
       </div>
     </main>

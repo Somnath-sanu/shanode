@@ -1,61 +1,40 @@
-'use client';
+"use client"
 
-import { useState } from 'react';
-import { authClient } from '@/lib/auth/client';
-
-type Provider = 'github' | 'google';
+type Provider = "github" | "google"
 
 export function GitHubSignInButton({
-  provider = 'github',
+  provider = "github",
   label,
+  onClick,
+  isLoaded,
 }: {
-  provider?: Provider;
-  label?: string;
+  provider?: Provider
+  label?: string
+  onClick: () => void
+  isLoaded?: boolean
 }) {
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   const defaultLabel =
-    provider === 'google' ? 'Continue with Google' : 'Continue with GitHub';
-
-  async function handleClick() {
-    setPending(true);
-    setError(null);
-
-    try {
-      const { error: signInError } = await authClient.signIn.social({
-        provider,
-        callbackURL: '/',
-      });
-
-      if (signInError) {
-        setError(
-          signInError.message ||
-            `${provider} sign-in failed. Check Neon Console (provider enabled + credentials) and trusted domains.`
-        );
-        setPending(false);
-      }
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Unexpected error starting sign-in');
-      setPending(false);
-    }
-  }
+    provider === "github" ? "Sign in with GitHub" : "Sign in with Google"
 
   return (
     <div className="flex w-full flex-col items-center gap-3 sm:w-auto">
-      {error && (
+      {/* {error && (
         <p className="max-w-sm rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-left text-sm text-red-400">
           {error}
         </p>
-      )}
+      )} */}
       <button
         type="button"
-        onClick={handleClick}
-        disabled={pending}
+        onClick={onClick}
+        disabled={!isLoaded}
         className="flex w-full items-center justify-center gap-3 rounded-xl bg-white px-6 py-3.5 font-semibold text-gray-900 shadow-md transition duration-150 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
       >
-        {provider === 'github' ? (
-          <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+        {provider === "github" ? (
+          <svg
+            className="h-5 w-5 fill-current"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
             <path
               fillRule="evenodd"
               clipRule="evenodd"
@@ -82,8 +61,8 @@ export function GitHubSignInButton({
             />
           </svg>
         )}
-        {pending ? 'Redirecting...' : label ?? defaultLabel}
+        {!isLoaded ? "Redirecting..." : (label ?? defaultLabel)}
       </button>
     </div>
-  );
+  )
 }
