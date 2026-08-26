@@ -4,8 +4,9 @@ export const auth = createNeonAuth({
   baseUrl: process.env.NEON_AUTH_BASE_URL!,
   cookies: {
     secret: process.env.NEON_AUTH_COOKIE_SECRET!,
-    // sessionDataTtl: 300, // optional session_data cache TTL in seconds (default: 300)
+    // OAuth returns via a cross-site top-level navigation.
+    // Default "strict" drops the session cookie on that return — use "lax".
+    sameSite: 'lax',
   },
-  // Temporarily verbose so OAuth/proxy issues show in the terminal
   logLevel: 'debug',
 });
