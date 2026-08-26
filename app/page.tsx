@@ -3,7 +3,6 @@ import { signOut } from "@/app/auth/actions"
 import { GitHubSignInButton } from "@/components/github-sign-in-button"
 import Image from "next/image"
 
-// Server components using auth methods must be rendered dynamically
 export const dynamic = "force-dynamic"
 
 export default async function HomePage() {
@@ -83,8 +82,9 @@ export default async function HomePage() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <GitHubSignInButton />
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <GitHubSignInButton provider="google" />
+          <GitHubSignInButton provider="github" />
         </div>
       </div>
     </main>
