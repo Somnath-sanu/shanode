@@ -1,7 +1,9 @@
+import { Suspense } from "react"
 import { Geist_Mono, IBM_Plex_Sans, Oxanium } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { SessionRefresh } from "@/components/session-refresh"
 import { cn } from "@/lib/utils"
 import { TRPCReactProvider } from "@/trpc/client"
 
@@ -39,7 +41,12 @@ export default function RootLayout({
     >
       <body>
         <TRPCReactProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <Suspense fallback={null}>
+              <SessionRefresh />
+            </Suspense>
+            {children}
+          </ThemeProvider>
         </TRPCReactProvider>
       </body>
     </html>
