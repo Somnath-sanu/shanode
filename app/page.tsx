@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth/server"
 import { signInWithGithub } from "@/app/auth/sign-in/actions"
 import { signOut } from "@/app/auth/actions"
-import Link from "next/link"
 import Image from "next/image"
 
 // Server components using auth methods must be rendered dynamically
@@ -109,13 +108,6 @@ export default async function HomePage() {
               Continue with GitHub
             </button>
           </form>
-
-          <Link
-            href="/auth/sign-in"
-            className="flex w-full items-center justify-center rounded-xl border border-gray-800 bg-gray-900/60 px-6 py-3.5 font-semibold text-gray-300 transition hover:bg-gray-800 hover:text-white sm:w-auto"
-          >
-            Sign in page
-          </Link>
         </div>
       </div>
     </main>
