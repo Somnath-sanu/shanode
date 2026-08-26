@@ -65,7 +65,7 @@ export default function SignInPage() {
         <div className="pt-2 text-center text-xs text-gray-500">
           New here?{' '}
           <Link
-            href="/auth/sign-up"
+            href="/auth/sign-in"
             className="font-medium text-indigo-400 hover:text-indigo-300 hover:underline"
           >
             Create an account

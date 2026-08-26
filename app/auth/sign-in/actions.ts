@@ -29,5 +29,5 @@ export async function signInWithGithub(): Promise<AuthActionState> {
   }
 
   // Send the browser to GitHub (this is the missing piece)
-  redirect(data.url);
+  redirect("/");
 }
