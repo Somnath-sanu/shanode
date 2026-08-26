@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum JobStatus {
+  QUEUED
+  BUILDING
+  SUCCESS
+  FAILED
+}
+
+model Job {
+  id       String    @id @default(cuid())
+  status    JobStatus @default(QUEUED)
+  repoUrl   String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
