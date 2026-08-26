@@ -9,6 +9,9 @@ export type AuthActionState = { error: string } | null;
  * Server-side GitHub OAuth start.
  * Prefer the client button (authClient.signIn.social) when possible —
  * it auto-redirects. This action is kept for forms that must stay on the server.
+ *
+ * data.url is an external OAuth URL (github.com). Next.js typedRoutes only
+ * types internal routes, so we assert for the external redirect.
  */
 export async function signInWithGithub(): Promise<AuthActionState> {
   const { data, error } = await auth.signIn.social({
@@ -24,6 +27,6 @@ export async function signInWithGithub(): Promise<AuthActionState> {
     };
   }
 
-  // MUST be data.url (GitHub authorize URL) — not "/"
-  redirect(data.url);
+  // External OAuth URL — typedRoutes only knows app routes
+  redirect(data.url as never);
 }
