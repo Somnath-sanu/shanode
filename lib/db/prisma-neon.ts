@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../app/generated/prisma/client"
+import { PrismaClient } from "./generated/prisma/client"
 import { PrismaNeon } from "@prisma/adapter-neon" // Neon serverless adapter
 
 const globalForPrisma = globalThis as unknown as {

@@ -4,12 +4,21 @@ import { GitHubSignInButton } from "@/components/github-sign-in-button"
 import Image from "next/image"
 import { useClerk, useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
+import { Spinner } from "@/components/ui/spinner"
 
 export default function Page() {
   const clerk = useClerk()
   const { user, isSignedIn, isLoaded } = useUser()
 
-  if (isSignedIn && isLoaded && user) {
+  if (!isLoaded) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-gray-950 px-4 text-white">
+        <Spinner className="size-11" />
+      </div>
+    )
+  }
+
+  if (isSignedIn && user) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center bg-gray-950 px-4 text-white">
         <div className="w-full max-w-md space-y-6 rounded-2xl border border-gray-800 bg-gray-900/80 p-8 shadow-2xl backdrop-blur-xl">

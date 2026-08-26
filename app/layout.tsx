@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { TRPCReactProvider } from "@/trpc/client"
 import { ClerkProvider } from "@clerk/nextjs"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { Toaster } from "@/components/ui/sonner"
 
 const oxaniumHeading = Oxanium({
   subsets: ["latin"],
@@ -40,13 +41,15 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ClerkProvider>
-          <TRPCReactProvider>
-            <ThemeProvider>
-              <TooltipProvider>{children}</TooltipProvider>
-            </ThemeProvider>
-          </TRPCReactProvider>
-        </ClerkProvider>
+        <TooltipProvider>
+          <ClerkProvider>
+            <TRPCReactProvider>
+              <ThemeProvider>
+                {children} <Toaster />
+              </ThemeProvider>
+            </TRPCReactProvider>
+          </ClerkProvider>
+        </TooltipProvider>
       </body>
     </html>
   )

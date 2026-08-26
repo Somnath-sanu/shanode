@@ -15,10 +15,10 @@ enum JobStatus {
 }
 
 model Job {
-  id       String    @id @default(cuid())
-  status    JobStatus @default(QUEUED)
-  repoUrl   String
+  id      String    @id @default(cuid())
+  status  JobStatus @default(QUEUED)
+  repoUrl String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

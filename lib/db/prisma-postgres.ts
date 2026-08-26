@@ -1,18 +1,20 @@
-import { PrismaClient } from "../../app/generated/prisma/client"
-import { PrismaPg } from "@prisma/adapter-pg" // prisma-poatgres adapter
+// NOT USING IN THIS PROJECT, BUT KEEPING FOR REFERENCE
 
-const globalForPrisma = global as unknown as {
-  prisma: PrismaClient | undefined
-}
+// import { PrismaClient } from "./generated/prisma/client"
+// import { PrismaPg } from "@prisma/adapter-pg" // prisma-poatgres adapter
 
-const adapter = new PrismaPg({
-  connectionString: process.env.PRISMA_DATABASE_URL!,
-})
+// const globalForPrisma = global as unknown as {
+//   prisma: PrismaClient | undefined
+// }
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter,
-  })
+// const adapter = new PrismaPg({
+//   connectionString: process.env.PRISMA_DATABASE_URL!,
+// })
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
+// export const prisma =
+//   globalForPrisma.prisma ??
+//   new PrismaClient({
+//     adapter,
+//   })
+
+// if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
