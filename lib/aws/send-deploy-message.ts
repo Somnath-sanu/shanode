@@ -15,6 +15,7 @@ export type DeployMessagePayload = {
   repoFullName: string
   branch: string
   env: DeployMessageEnv[]
+  type: "NextJS" | "React"
 }
 
 export async function sendDeployMessage(payload: DeployMessagePayload) {

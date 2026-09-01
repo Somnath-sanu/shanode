@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  output: "standalone", // for deployment on EC2 this is required // TODO: add this check to EC2 code if not present build should fail with proper error message what to do to fix it
 }
 
 export default nextConfig

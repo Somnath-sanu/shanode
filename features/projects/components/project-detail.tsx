@@ -117,6 +117,7 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
               defaultBranch={project.defaultBranch}
               repoUrl={project.repoUrl}
               webhookId={project.webhookId}
+              framework={project.framework}
             />
           ) : null}
         </section>

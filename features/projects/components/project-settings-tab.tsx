@@ -17,6 +17,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { frameworkLabel } from "@/features/projects/lib/framework"
 
 type ProjectSettingsTabProps = {
   projectId: string
@@ -24,6 +25,7 @@ type ProjectSettingsTabProps = {
   defaultBranch: string
   repoUrl: string
   webhookId: string | null
+  framework: "NEXTJS" | "REACT"
 }
 
 export function ProjectSettingsTab({
@@ -32,6 +34,7 @@ export function ProjectSettingsTab({
   defaultBranch,
   repoUrl,
   webhookId,
+  framework,
 }: ProjectSettingsTabProps) {
   const trpc = useTRPC()
   const router = useRouter()
@@ -59,6 +62,10 @@ export function ProjectSettingsTab({
           <div className="flex justify-between gap-4 border-b border-border py-2">
             <dt className="text-muted-foreground">Repository</dt>
             <dd className="truncate font-medium">{repoFullName}</dd>
+          </div>
+          <div className="flex justify-between gap-4 border-b border-border py-2">
+            <dt className="text-muted-foreground">Framework</dt>
+            <dd className="font-medium">{frameworkLabel(framework)}</dd>
           </div>
           <div className="flex justify-between gap-4 border-b border-border py-2">
             <dt className="text-muted-foreground">Default branch</dt>

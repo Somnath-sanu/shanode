@@ -3,11 +3,14 @@ import { TRPCError } from "@trpc/server"
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init"
 import { prisma } from "@/lib/db/prisma-neon"
 import { sendDeployMessage } from "@/lib/aws/send-deploy-message"
+import { frameworkToSqsType } from "@/features/projects/lib/framework"
 
 const envVarSchema = z.object({
   key: z.string().min(1),
   value: z.string(),
 })
+
+const frameworkSchema = z.enum(["NEXTJS", "REACT"])
 
 function normalizeEnvVars(envVars: { key: string; value: string }[]) {
   return envVars
@@ -104,6 +107,7 @@ export const projectsRouter = createTRPCRouter({
         repoFullName: z.string().min(1),
         repoId: z.number().int().positive(),
         defaultBranch: z.string().min(1).optional(),
+        framework: frameworkSchema,
         envVars: z.array(envVarSchema).optional(),
       })
     )
@@ -120,6 +124,7 @@ export const projectsRouter = createTRPCRouter({
             repoFullName: input.repoFullName,
             repoId: BigInt(input.repoId),
             defaultBranch,
+            framework: input.framework,
           },
         })
 
@@ -159,6 +164,7 @@ export const projectsRouter = createTRPCRouter({
         repoFullName: result.project.repoFullName,
         branch: result.deployment.branch,
         env: normalizedEnv,
+        type: frameworkToSqsType(input.framework),
       })
 
       return {
@@ -205,6 +211,7 @@ export const projectsRouter = createTRPCRouter({
         repoFullName: project.repoFullName,
         branch: result.deployment.branch,
         env: envVars,
+        type: frameworkToSqsType(project.framework),
       })
 
       return {

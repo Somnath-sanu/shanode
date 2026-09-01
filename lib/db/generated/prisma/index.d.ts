@@ -57,6 +57,14 @@ export const BuildStatus: {
 
 export type BuildStatus = (typeof BuildStatus)[keyof typeof BuildStatus]
 
+
+export const Framework: {
+  NEXTJS: 'NEXTJS',
+  REACT: 'REACT'
+};
+
+export type Framework = (typeof Framework)[keyof typeof Framework]
+
 }
 
 export type DeploymentStatus = $Enums.DeploymentStatus
@@ -66,6 +74,10 @@ export const DeploymentStatus: typeof $Enums.DeploymentStatus
 export type BuildStatus = $Enums.BuildStatus
 
 export const BuildStatus: typeof $Enums.BuildStatus
+
+export type Framework = $Enums.Framework
+
+export const Framework: typeof $Enums.Framework
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1298,6 +1310,7 @@ export namespace Prisma {
     repoFullName: string | null
     repoId: bigint | null
     defaultBranch: string | null
+    framework: $Enums.Framework | null
     deployedUrl: string | null
     webhookId: string | null
     createdAt: Date | null
@@ -1312,6 +1325,7 @@ export namespace Prisma {
     repoFullName: string | null
     repoId: bigint | null
     defaultBranch: string | null
+    framework: $Enums.Framework | null
     deployedUrl: string | null
     webhookId: string | null
     createdAt: Date | null
@@ -1326,6 +1340,7 @@ export namespace Prisma {
     repoFullName: number
     repoId: number
     defaultBranch: number
+    framework: number
     deployedUrl: number
     webhookId: number
     createdAt: number
@@ -1350,6 +1365,7 @@ export namespace Prisma {
     repoFullName?: true
     repoId?: true
     defaultBranch?: true
+    framework?: true
     deployedUrl?: true
     webhookId?: true
     createdAt?: true
@@ -1364,6 +1380,7 @@ export namespace Prisma {
     repoFullName?: true
     repoId?: true
     defaultBranch?: true
+    framework?: true
     deployedUrl?: true
     webhookId?: true
     createdAt?: true
@@ -1378,6 +1395,7 @@ export namespace Prisma {
     repoFullName?: true
     repoId?: true
     defaultBranch?: true
+    framework?: true
     deployedUrl?: true
     webhookId?: true
     createdAt?: true
@@ -1479,6 +1497,7 @@ export namespace Prisma {
     repoFullName: string
     repoId: bigint
     defaultBranch: string
+    framework: $Enums.Framework
     deployedUrl: string | null
     webhookId: string | null
     createdAt: Date
@@ -1512,6 +1531,7 @@ export namespace Prisma {
     repoFullName?: boolean
     repoId?: boolean
     defaultBranch?: boolean
+    framework?: boolean
     deployedUrl?: boolean
     webhookId?: boolean
     createdAt?: boolean
@@ -1529,6 +1549,7 @@ export namespace Prisma {
     repoFullName?: boolean
     repoId?: boolean
     defaultBranch?: boolean
+    framework?: boolean
     deployedUrl?: boolean
     webhookId?: boolean
     createdAt?: boolean
@@ -1543,6 +1564,7 @@ export namespace Prisma {
     repoFullName?: boolean
     repoId?: boolean
     defaultBranch?: boolean
+    framework?: boolean
     deployedUrl?: boolean
     webhookId?: boolean
     createdAt?: boolean
@@ -1557,13 +1579,14 @@ export namespace Prisma {
     repoFullName?: boolean
     repoId?: boolean
     defaultBranch?: boolean
+    framework?: boolean
     deployedUrl?: boolean
     webhookId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "repoUrl" | "repoFullName" | "repoId" | "defaultBranch" | "deployedUrl" | "webhookId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "repoUrl" | "repoFullName" | "repoId" | "defaultBranch" | "framework" | "deployedUrl" | "webhookId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deployments?: boolean | Project$deploymentsArgs<ExtArgs>
     envVars?: boolean | Project$envVarsArgs<ExtArgs>
@@ -1586,6 +1609,7 @@ export namespace Prisma {
       repoFullName: string
       repoId: bigint
       defaultBranch: string
+      framework: $Enums.Framework
       deployedUrl: string | null
       webhookId: string | null
       createdAt: Date
@@ -2022,6 +2046,7 @@ export namespace Prisma {
     readonly repoFullName: FieldRef<"Project", 'String'>
     readonly repoId: FieldRef<"Project", 'BigInt'>
     readonly defaultBranch: FieldRef<"Project", 'String'>
+    readonly framework: FieldRef<"Project", 'Framework'>
     readonly deployedUrl: FieldRef<"Project", 'String'>
     readonly webhookId: FieldRef<"Project", 'String'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
@@ -5804,6 +5829,7 @@ export namespace Prisma {
     repoFullName: 'repoFullName',
     repoId: 'repoId',
     defaultBranch: 'defaultBranch',
+    framework: 'framework',
     deployedUrl: 'deployedUrl',
     webhookId: 'webhookId',
     createdAt: 'createdAt',
@@ -5910,6 +5936,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Framework'
+   */
+  export type EnumFrameworkFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Framework'>
+    
+
+
+  /**
+   * Reference to a field of type 'Framework[]'
+   */
+  export type ListEnumFrameworkFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Framework[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -5993,6 +6033,7 @@ export namespace Prisma {
     repoFullName?: StringFilter<"Project"> | string
     repoId?: BigIntFilter<"Project"> | bigint | number
     defaultBranch?: StringFilter<"Project"> | string
+    framework?: EnumFrameworkFilter<"Project"> | $Enums.Framework
     deployedUrl?: StringNullableFilter<"Project"> | string | null
     webhookId?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
@@ -6009,6 +6050,7 @@ export namespace Prisma {
     repoFullName?: SortOrder
     repoId?: SortOrder
     defaultBranch?: SortOrder
+    framework?: SortOrder
     deployedUrl?: SortOrderInput | SortOrder
     webhookId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -6028,6 +6070,7 @@ export namespace Prisma {
     repoFullName?: StringFilter<"Project"> | string
     repoId?: BigIntFilter<"Project"> | bigint | number
     defaultBranch?: StringFilter<"Project"> | string
+    framework?: EnumFrameworkFilter<"Project"> | $Enums.Framework
     deployedUrl?: StringNullableFilter<"Project"> | string | null
     webhookId?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
@@ -6044,6 +6087,7 @@ export namespace Prisma {
     repoFullName?: SortOrder
     repoId?: SortOrder
     defaultBranch?: SortOrder
+    framework?: SortOrder
     deployedUrl?: SortOrderInput | SortOrder
     webhookId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -6066,6 +6110,7 @@ export namespace Prisma {
     repoFullName?: StringWithAggregatesFilter<"Project"> | string
     repoId?: BigIntWithAggregatesFilter<"Project"> | bigint | number
     defaultBranch?: StringWithAggregatesFilter<"Project"> | string
+    framework?: EnumFrameworkWithAggregatesFilter<"Project"> | $Enums.Framework
     deployedUrl?: StringNullableWithAggregatesFilter<"Project"> | string | null
     webhookId?: StringNullableWithAggregatesFilter<"Project"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
@@ -6279,6 +6324,7 @@ export namespace Prisma {
     repoFullName: string
     repoId: bigint | number
     defaultBranch?: string
+    framework?: $Enums.Framework
     deployedUrl?: string | null
     webhookId?: string | null
     createdAt?: Date | string
@@ -6295,6 +6341,7 @@ export namespace Prisma {
     repoFullName: string
     repoId: bigint | number
     defaultBranch?: string
+    framework?: $Enums.Framework
     deployedUrl?: string | null
     webhookId?: string | null
     createdAt?: Date | string
@@ -6311,6 +6358,7 @@ export namespace Prisma {
     repoFullName?: StringFieldUpdateOperationsInput | string
     repoId?: BigIntFieldUpdateOperationsInput | bigint | number
     defaultBranch?: StringFieldUpdateOperationsInput | string
+    framework?: EnumFrameworkFieldUpdateOperationsInput | $Enums.Framework
     deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     webhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6327,6 +6375,7 @@ export namespace Prisma {
     repoFullName?: StringFieldUpdateOperationsInput | string
     repoId?: BigIntFieldUpdateOperationsInput | bigint | number
     defaultBranch?: StringFieldUpdateOperationsInput | string
+    framework?: EnumFrameworkFieldUpdateOperationsInput | $Enums.Framework
     deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     webhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6343,6 +6392,7 @@ export namespace Prisma {
     repoFullName: string
     repoId: bigint | number
     defaultBranch?: string
+    framework?: $Enums.Framework
     deployedUrl?: string | null
     webhookId?: string | null
     createdAt?: Date | string
@@ -6357,6 +6407,7 @@ export namespace Prisma {
     repoFullName?: StringFieldUpdateOperationsInput | string
     repoId?: BigIntFieldUpdateOperationsInput | bigint | number
     defaultBranch?: StringFieldUpdateOperationsInput | string
+    framework?: EnumFrameworkFieldUpdateOperationsInput | $Enums.Framework
     deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     webhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6371,6 +6422,7 @@ export namespace Prisma {
     repoFullName?: StringFieldUpdateOperationsInput | string
     repoId?: BigIntFieldUpdateOperationsInput | bigint | number
     defaultBranch?: StringFieldUpdateOperationsInput | string
+    framework?: EnumFrameworkFieldUpdateOperationsInput | $Enums.Framework
     deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     webhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6614,6 +6666,13 @@ export namespace Prisma {
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
+  export type EnumFrameworkFilter<$PrismaModel = never> = {
+    equals?: $Enums.Framework | EnumFrameworkFieldRefInput<$PrismaModel>
+    in?: $Enums.Framework[] | ListEnumFrameworkFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Framework[] | ListEnumFrameworkFieldRefInput<$PrismaModel>
+    not?: NestedEnumFrameworkFilter<$PrismaModel> | $Enums.Framework
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -6673,6 +6732,7 @@ export namespace Prisma {
     repoFullName?: SortOrder
     repoId?: SortOrder
     defaultBranch?: SortOrder
+    framework?: SortOrder
     deployedUrl?: SortOrder
     webhookId?: SortOrder
     createdAt?: SortOrder
@@ -6691,6 +6751,7 @@ export namespace Prisma {
     repoFullName?: SortOrder
     repoId?: SortOrder
     defaultBranch?: SortOrder
+    framework?: SortOrder
     deployedUrl?: SortOrder
     webhookId?: SortOrder
     createdAt?: SortOrder
@@ -6705,6 +6766,7 @@ export namespace Prisma {
     repoFullName?: SortOrder
     repoId?: SortOrder
     defaultBranch?: SortOrder
+    framework?: SortOrder
     deployedUrl?: SortOrder
     webhookId?: SortOrder
     createdAt?: SortOrder
@@ -6747,6 +6809,16 @@ export namespace Prisma {
     _sum?: NestedBigIntFilter<$PrismaModel>
     _min?: NestedBigIntFilter<$PrismaModel>
     _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type EnumFrameworkWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Framework | EnumFrameworkFieldRefInput<$PrismaModel>
+    in?: $Enums.Framework[] | ListEnumFrameworkFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Framework[] | ListEnumFrameworkFieldRefInput<$PrismaModel>
+    not?: NestedEnumFrameworkWithAggregatesFilter<$PrismaModel> | $Enums.Framework
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFrameworkFilter<$PrismaModel>
+    _max?: NestedEnumFrameworkFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -6970,6 +7042,10 @@ export namespace Prisma {
     divide?: bigint | number
   }
 
+  export type EnumFrameworkFieldUpdateOperationsInput = {
+    set?: $Enums.Framework
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -7151,6 +7227,13 @@ export namespace Prisma {
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
+  export type NestedEnumFrameworkFilter<$PrismaModel = never> = {
+    equals?: $Enums.Framework | EnumFrameworkFieldRefInput<$PrismaModel>
+    in?: $Enums.Framework[] | ListEnumFrameworkFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Framework[] | ListEnumFrameworkFieldRefInput<$PrismaModel>
+    not?: NestedEnumFrameworkFilter<$PrismaModel> | $Enums.Framework
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -7229,6 +7312,16 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumFrameworkWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Framework | EnumFrameworkFieldRefInput<$PrismaModel>
+    in?: $Enums.Framework[] | ListEnumFrameworkFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Framework[] | ListEnumFrameworkFieldRefInput<$PrismaModel>
+    not?: NestedEnumFrameworkWithAggregatesFilter<$PrismaModel> | $Enums.Framework
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFrameworkFilter<$PrismaModel>
+    _max?: NestedEnumFrameworkFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7434,6 +7527,7 @@ export namespace Prisma {
     repoFullName: string
     repoId: bigint | number
     defaultBranch?: string
+    framework?: $Enums.Framework
     deployedUrl?: string | null
     webhookId?: string | null
     createdAt?: Date | string
@@ -7449,6 +7543,7 @@ export namespace Prisma {
     repoFullName: string
     repoId: bigint | number
     defaultBranch?: string
+    framework?: $Enums.Framework
     deployedUrl?: string | null
     webhookId?: string | null
     createdAt?: Date | string
@@ -7480,6 +7575,7 @@ export namespace Prisma {
     repoFullName?: StringFieldUpdateOperationsInput | string
     repoId?: BigIntFieldUpdateOperationsInput | bigint | number
     defaultBranch?: StringFieldUpdateOperationsInput | string
+    framework?: EnumFrameworkFieldUpdateOperationsInput | $Enums.Framework
     deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     webhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7495,6 +7591,7 @@ export namespace Prisma {
     repoFullName?: StringFieldUpdateOperationsInput | string
     repoId?: BigIntFieldUpdateOperationsInput | bigint | number
     defaultBranch?: StringFieldUpdateOperationsInput | string
+    framework?: EnumFrameworkFieldUpdateOperationsInput | $Enums.Framework
     deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     webhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7510,6 +7607,7 @@ export namespace Prisma {
     repoFullName: string
     repoId: bigint | number
     defaultBranch?: string
+    framework?: $Enums.Framework
     deployedUrl?: string | null
     webhookId?: string | null
     createdAt?: Date | string
@@ -7525,6 +7623,7 @@ export namespace Prisma {
     repoFullName: string
     repoId: bigint | number
     defaultBranch?: string
+    framework?: $Enums.Framework
     deployedUrl?: string | null
     webhookId?: string | null
     createdAt?: Date | string
@@ -7582,6 +7681,7 @@ export namespace Prisma {
     repoFullName?: StringFieldUpdateOperationsInput | string
     repoId?: BigIntFieldUpdateOperationsInput | bigint | number
     defaultBranch?: StringFieldUpdateOperationsInput | string
+    framework?: EnumFrameworkFieldUpdateOperationsInput | $Enums.Framework
     deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     webhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7597,6 +7697,7 @@ export namespace Prisma {
     repoFullName?: StringFieldUpdateOperationsInput | string
     repoId?: BigIntFieldUpdateOperationsInput | bigint | number
     defaultBranch?: StringFieldUpdateOperationsInput | string
+    framework?: EnumFrameworkFieldUpdateOperationsInput | $Enums.Framework
     deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     webhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

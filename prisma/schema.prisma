@@ -21,14 +21,20 @@ enum BuildStatus {
   FAILED
 }
 
+enum Framework {
+  NEXTJS
+  REACT
+}
+
 model Project {
-  id            String   @id @default(cuid())
+  id            String    @id @default(cuid())
   userId        String
   name          String
   repoUrl       String
   repoFullName  String
   repoId        BigInt
-  defaultBranch String   @default("main")
+  defaultBranch String    @default("main")
+  framework     Framework @default(REACT)
   deployedUrl   String?
   webhookId     String?
 

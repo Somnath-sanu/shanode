@@ -31,8 +31,10 @@ import {
 } from "@/components/ui/command"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { EnvVarsEditor } from "@/features/projects/components/env-vars-editor"
 import type { EnvVarPair } from "@/features/projects/lib/parse-env"
+import type { Framework } from "@/features/projects/lib/framework"
 import { cn } from "@/lib/utils"
 
 type ImportRepoDialogProps = {
@@ -49,6 +51,7 @@ type SelectedRepo = {
   isPrivate: boolean
   ownerAvatarUrl: string
   updatedAt: string | null
+  ownerLogin: string
 }
 
 export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) {
@@ -60,6 +63,9 @@ export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) 
   const [step, setStep] = useState<"repos" | "env">("repos")
   const [selectedRepo, setSelectedRepo] = useState<SelectedRepo | null>(null)
   const [envVars, setEnvVars] = useState<EnvVarPair[]>([])
+  const [frameworkOverride, setFrameworkOverride] = useState<Framework | null>(
+    null
+  )
 
   const reposQuery = useQuery({
     ...trpc.github.listRepos.queryOptions({
@@ -67,6 +73,21 @@ export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) 
     }),
     enabled: open,
   })
+
+  const owner = selectedRepo?.ownerLogin
+  const repoName = selectedRepo?.name
+
+  const detectQuery = useQuery({
+    ...trpc.github.detectFramework.queryOptions({
+      owner: owner ?? "",
+      repo: repoName ?? "",
+      ref: selectedRepo?.defaultBranch,
+    }),
+    enabled: open && step === "env" && Boolean(owner && repoName),
+  })
+
+  const framework =
+    frameworkOverride ?? detectQuery.data?.framework ?? "REACT"
 
   const createProject = useMutation(
     trpc.projects.create.mutationOptions({
@@ -97,6 +118,7 @@ export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) 
     setStep("repos")
     setSelectedRepo(null)
     setEnvVars([])
+    setFrameworkOverride(null)
   }
 
   function resetAndClose() {
@@ -121,7 +143,10 @@ export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) 
       isPrivate: repo.isPrivate,
       ownerAvatarUrl: repo.ownerAvatarUrl,
       updatedAt: repo.updatedAt,
+      ownerLogin: repo.ownerLogin,
     })
+    setFrameworkOverride(null)
+    setEnvVars([])
     setStep("env")
   }
 
@@ -136,6 +161,7 @@ export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) 
       repoFullName: selectedRepo.fullName,
       repoId: selectedRepo.id,
       defaultBranch: selectedRepo.defaultBranch,
+      framework,
       envVars: envVars.filter((row) => row.key.trim().length > 0),
     })
   }
@@ -150,12 +176,12 @@ export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) 
           <DialogTitle className="text-lg font-semibold tracking-tight">
             {step === "repos"
               ? "Import Git Repository"
-              : "Configure Environment"}
+              : "Configure Project"}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
             {step === "repos"
               ? `Select a repository from ${accountLabel}`
-              : `Optional env vars for ${selectedRepo?.fullName ?? "this project"} before deploy`}
+              : `Framework and optional env vars for ${selectedRepo?.fullName ?? "this project"}`}
           </DialogDescription>
         </DialogHeader>
 
@@ -253,7 +279,7 @@ export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) 
             </Command>
           </>
         ) : (
-          <div className="space-y-4 p-4">
+          <div className="max-h-[70vh] space-y-4 overflow-y-auto p-4">
             {selectedRepo ? (
               <div className="flex items-center gap-3 rounded-lg border border-border px-3 py-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -272,6 +298,44 @@ export function ImportRepoDialog({ open, onOpenChange }: ImportRepoDialogProps) 
                 </div>
               </div>
             ) : null}
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <label className="text-sm font-medium">Framework</label>
+                {detectQuery.isFetching ? (
+                  <span className="text-xs text-muted-foreground">
+                    Detecting…
+                  </span>
+                ) : detectQuery.data?.detected ? (
+                  <span className="text-xs text-muted-foreground">
+                    Auto-detected · change if wrong
+                  </span>
+                ) : (
+                  <span className="text-xs text-muted-foreground">
+                    Select manually
+                  </span>
+                )}
+              </div>
+              <ToggleGroup
+                value={[framework]}
+                onValueChange={(values) => {
+                  const next = values[0] as Framework | undefined
+                  if (!next) {
+                    return
+                  }
+                  setFrameworkOverride(next)
+                }}
+                variant="outline"
+                className="w-full"
+              >
+                <ToggleGroupItem value="NEXTJS" className="flex-1">
+                  Next.js
+                </ToggleGroupItem>
+                <ToggleGroupItem value="REACT" className="flex-1">
+                  React
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
 
             <EnvVarsEditor value={envVars} onChange={setEnvVars} />
 
