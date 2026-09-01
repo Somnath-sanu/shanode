@@ -18,7 +18,17 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "img.clerk.com",
         pathname: "/**",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "images.higgs.ai",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "d8j0ntlcm91z4.cloudfront.net",
+        pathname: "/**",
+      },
     ],
   },
   output: "standalone", // for deployment on EC2 this is required // TODO: add this check to EC2 code if not present build should fail with proper error message what to do to fix it
