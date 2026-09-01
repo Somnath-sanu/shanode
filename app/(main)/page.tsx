@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useClerk, useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
+import Link from "next/link"
 
 export default function Page() {
   const clerk = useClerk()
@@ -65,6 +66,15 @@ export default function Page() {
             onClick={() => clerk.signOut()}
           >
             Sign out
+          </Button>
+
+          <Button>
+            <Link href="/dashboard">
+              <span className="flex items-center gap-1.5 font-medium text-emerald-400">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+                Dashboard
+              </span>
+            </Link>
           </Button>
         </div>
       </main>

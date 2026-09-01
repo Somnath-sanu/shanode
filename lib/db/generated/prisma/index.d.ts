@@ -14,29 +14,58 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
- * Model Job
+ * Model Project
  * 
  */
-export type Job = $Result.DefaultSelection<Prisma.$JobPayload>
+export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
+/**
+ * Model EnvironmentVariable
+ * 
+ */
+export type EnvironmentVariable = $Result.DefaultSelection<Prisma.$EnvironmentVariablePayload>
+/**
+ * Model Deployment
+ * 
+ */
+export type Deployment = $Result.DefaultSelection<Prisma.$DeploymentPayload>
+/**
+ * Model Build
+ * 
+ */
+export type Build = $Result.DefaultSelection<Prisma.$BuildPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const JobStatus: {
+  export const DeploymentStatus: {
   QUEUED: 'QUEUED',
   BUILDING: 'BUILDING',
   SUCCESS: 'SUCCESS',
   FAILED: 'FAILED'
 };
 
-export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus]
+export type DeploymentStatus = (typeof DeploymentStatus)[keyof typeof DeploymentStatus]
+
+
+export const BuildStatus: {
+  QUEUED: 'QUEUED',
+  RUNNING: 'RUNNING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED'
+};
+
+export type BuildStatus = (typeof BuildStatus)[keyof typeof BuildStatus]
 
 }
 
-export type JobStatus = $Enums.JobStatus
+export type DeploymentStatus = $Enums.DeploymentStatus
 
-export const JobStatus: typeof $Enums.JobStatus
+export const DeploymentStatus: typeof $Enums.DeploymentStatus
+
+export type BuildStatus = $Enums.BuildStatus
+
+export const BuildStatus: typeof $Enums.BuildStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -47,8 +76,8 @@ export const JobStatus: typeof $Enums.JobStatus
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Jobs
- * const jobs = await prisma.job.findMany()
+ * // Fetch zero or more Projects
+ * const projects = await prisma.project.findMany()
  * ```
  *
  *
@@ -70,8 +99,8 @@ export class PrismaClient<
    * const prisma = new PrismaClient({
    *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
    * })
-   * // Fetch zero or more Jobs
-   * const jobs = await prisma.job.findMany()
+   * // Fetch zero or more Projects
+   * const projects = await prisma.project.findMany()
    * ```
    *
    *
@@ -160,14 +189,44 @@ export class PrismaClient<
   }>>
 
       /**
-   * `prisma.job`: Exposes CRUD operations for the **Job** model.
+   * `prisma.project`: Exposes CRUD operations for the **Project** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Jobs
-    * const jobs = await prisma.job.findMany()
+    * // Fetch zero or more Projects
+    * const projects = await prisma.project.findMany()
     * ```
     */
-  get job(): Prisma.JobDelegate<ExtArgs, ClientOptions>;
+  get project(): Prisma.ProjectDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.environmentVariable`: Exposes CRUD operations for the **EnvironmentVariable** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EnvironmentVariables
+    * const environmentVariables = await prisma.environmentVariable.findMany()
+    * ```
+    */
+  get environmentVariable(): Prisma.EnvironmentVariableDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.deployment`: Exposes CRUD operations for the **Deployment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Deployments
+    * const deployments = await prisma.deployment.findMany()
+    * ```
+    */
+  get deployment(): Prisma.DeploymentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.build`: Exposes CRUD operations for the **Build** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Builds
+    * const builds = await prisma.build.findMany()
+    * ```
+    */
+  get build(): Prisma.BuildDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -615,7 +674,10 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    Job: 'Job'
+    Project: 'Project',
+    EnvironmentVariable: 'EnvironmentVariable',
+    Deployment: 'Deployment',
+    Build: 'Build'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -631,81 +693,303 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "job"
+      modelProps: "project" | "environmentVariable" | "deployment" | "build"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
-      Job: {
-        payload: Prisma.$JobPayload<ExtArgs>
-        fields: Prisma.JobFieldRefs
+      Project: {
+        payload: Prisma.$ProjectPayload<ExtArgs>
+        fields: Prisma.ProjectFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.JobFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload> | null
+            args: Prisma.ProjectFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.JobFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
+            args: Prisma.ProjectFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
           }
           findFirst: {
-            args: Prisma.JobFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload> | null
+            args: Prisma.ProjectFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.JobFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
+            args: Prisma.ProjectFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
           }
           findMany: {
-            args: Prisma.JobFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>[]
+            args: Prisma.ProjectFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>[]
           }
           create: {
-            args: Prisma.JobCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
+            args: Prisma.ProjectCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
           }
           createMany: {
-            args: Prisma.JobCreateManyArgs<ExtArgs>
+            args: Prisma.ProjectCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.JobCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>[]
+            args: Prisma.ProjectCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>[]
           }
           delete: {
-            args: Prisma.JobDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
+            args: Prisma.ProjectDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
           }
           update: {
-            args: Prisma.JobUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
+            args: Prisma.ProjectUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
           }
           deleteMany: {
-            args: Prisma.JobDeleteManyArgs<ExtArgs>
+            args: Prisma.ProjectDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.JobUpdateManyArgs<ExtArgs>
+            args: Prisma.ProjectUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.JobUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>[]
+            args: Prisma.ProjectUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>[]
           }
           upsert: {
-            args: Prisma.JobUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
+            args: Prisma.ProjectUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
           }
           aggregate: {
-            args: Prisma.JobAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateJob>
+            args: Prisma.ProjectAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProject>
           }
           groupBy: {
-            args: Prisma.JobGroupByArgs<ExtArgs>
-            result: $Utils.Optional<JobGroupByOutputType>[]
+            args: Prisma.ProjectGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProjectGroupByOutputType>[]
           }
           count: {
-            args: Prisma.JobCountArgs<ExtArgs>
-            result: $Utils.Optional<JobCountAggregateOutputType> | number
+            args: Prisma.ProjectCountArgs<ExtArgs>
+            result: $Utils.Optional<ProjectCountAggregateOutputType> | number
+          }
+        }
+      }
+      EnvironmentVariable: {
+        payload: Prisma.$EnvironmentVariablePayload<ExtArgs>
+        fields: Prisma.EnvironmentVariableFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EnvironmentVariableFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EnvironmentVariableFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>
+          }
+          findFirst: {
+            args: Prisma.EnvironmentVariableFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EnvironmentVariableFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>
+          }
+          findMany: {
+            args: Prisma.EnvironmentVariableFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>[]
+          }
+          create: {
+            args: Prisma.EnvironmentVariableCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>
+          }
+          createMany: {
+            args: Prisma.EnvironmentVariableCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EnvironmentVariableCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>[]
+          }
+          delete: {
+            args: Prisma.EnvironmentVariableDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>
+          }
+          update: {
+            args: Prisma.EnvironmentVariableUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>
+          }
+          deleteMany: {
+            args: Prisma.EnvironmentVariableDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EnvironmentVariableUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EnvironmentVariableUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>[]
+          }
+          upsert: {
+            args: Prisma.EnvironmentVariableUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnvironmentVariablePayload>
+          }
+          aggregate: {
+            args: Prisma.EnvironmentVariableAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEnvironmentVariable>
+          }
+          groupBy: {
+            args: Prisma.EnvironmentVariableGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EnvironmentVariableGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EnvironmentVariableCountArgs<ExtArgs>
+            result: $Utils.Optional<EnvironmentVariableCountAggregateOutputType> | number
+          }
+        }
+      }
+      Deployment: {
+        payload: Prisma.$DeploymentPayload<ExtArgs>
+        fields: Prisma.DeploymentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DeploymentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeploymentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>
+          }
+          findFirst: {
+            args: Prisma.DeploymentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeploymentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>
+          }
+          findMany: {
+            args: Prisma.DeploymentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>[]
+          }
+          create: {
+            args: Prisma.DeploymentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>
+          }
+          createMany: {
+            args: Prisma.DeploymentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DeploymentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>[]
+          }
+          delete: {
+            args: Prisma.DeploymentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>
+          }
+          update: {
+            args: Prisma.DeploymentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>
+          }
+          deleteMany: {
+            args: Prisma.DeploymentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DeploymentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DeploymentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>[]
+          }
+          upsert: {
+            args: Prisma.DeploymentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeploymentPayload>
+          }
+          aggregate: {
+            args: Prisma.DeploymentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDeployment>
+          }
+          groupBy: {
+            args: Prisma.DeploymentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DeploymentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DeploymentCountArgs<ExtArgs>
+            result: $Utils.Optional<DeploymentCountAggregateOutputType> | number
+          }
+        }
+      }
+      Build: {
+        payload: Prisma.$BuildPayload<ExtArgs>
+        fields: Prisma.BuildFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BuildFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BuildFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>
+          }
+          findFirst: {
+            args: Prisma.BuildFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BuildFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>
+          }
+          findMany: {
+            args: Prisma.BuildFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>[]
+          }
+          create: {
+            args: Prisma.BuildCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>
+          }
+          createMany: {
+            args: Prisma.BuildCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BuildCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>[]
+          }
+          delete: {
+            args: Prisma.BuildDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>
+          }
+          update: {
+            args: Prisma.BuildUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>
+          }
+          deleteMany: {
+            args: Prisma.BuildDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BuildUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BuildUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>[]
+          }
+          upsert: {
+            args: Prisma.BuildUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BuildPayload>
+          }
+          aggregate: {
+            args: Prisma.BuildAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBuild>
+          }
+          groupBy: {
+            args: Prisma.BuildGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BuildGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BuildCountArgs<ExtArgs>
+            result: $Utils.Optional<BuildCountAggregateOutputType> | number
           }
         }
       }
@@ -832,7 +1116,10 @@ export namespace Prisma {
     comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
-    job?: JobOmit
+    project?: ProjectOmit
+    environmentVariable?: EnvironmentVariableOmit
+    deployment?: DeploymentOmit
+    build?: BuildOmit
   }
 
   /* Types for Logging */
@@ -908,342 +1195,531 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type ProjectCountOutputType
+   */
+
+  export type ProjectCountOutputType = {
+    deployments: number
+    envVars: number
+  }
+
+  export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deployments?: boolean | ProjectCountOutputTypeCountDeploymentsArgs
+    envVars?: boolean | ProjectCountOutputTypeCountEnvVarsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectCountOutputType
+     */
+    select?: ProjectCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountDeploymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeploymentWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountEnvVarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnvironmentVariableWhereInput
+  }
+
+
+  /**
+   * Count Type DeploymentCountOutputType
+   */
+
+  export type DeploymentCountOutputType = {
+    builds: number
+  }
+
+  export type DeploymentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    builds?: boolean | DeploymentCountOutputTypeCountBuildsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DeploymentCountOutputType without action
+   */
+  export type DeploymentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeploymentCountOutputType
+     */
+    select?: DeploymentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DeploymentCountOutputType without action
+   */
+  export type DeploymentCountOutputTypeCountBuildsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BuildWhereInput
+  }
+
 
   /**
    * Models
    */
 
   /**
-   * Model Job
+   * Model Project
    */
 
-  export type AggregateJob = {
-    _count: JobCountAggregateOutputType | null
-    _min: JobMinAggregateOutputType | null
-    _max: JobMaxAggregateOutputType | null
+  export type AggregateProject = {
+    _count: ProjectCountAggregateOutputType | null
+    _avg: ProjectAvgAggregateOutputType | null
+    _sum: ProjectSumAggregateOutputType | null
+    _min: ProjectMinAggregateOutputType | null
+    _max: ProjectMaxAggregateOutputType | null
   }
 
-  export type JobMinAggregateOutputType = {
+  export type ProjectAvgAggregateOutputType = {
+    repoId: number | null
+  }
+
+  export type ProjectSumAggregateOutputType = {
+    repoId: bigint | null
+  }
+
+  export type ProjectMinAggregateOutputType = {
     id: string | null
-    status: $Enums.JobStatus | null
+    userId: string | null
+    name: string | null
     repoUrl: string | null
+    repoFullName: string | null
+    repoId: bigint | null
+    defaultBranch: string | null
+    deployedUrl: string | null
+    webhookId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type JobMaxAggregateOutputType = {
+  export type ProjectMaxAggregateOutputType = {
     id: string | null
-    status: $Enums.JobStatus | null
+    userId: string | null
+    name: string | null
     repoUrl: string | null
+    repoFullName: string | null
+    repoId: bigint | null
+    defaultBranch: string | null
+    deployedUrl: string | null
+    webhookId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type JobCountAggregateOutputType = {
+  export type ProjectCountAggregateOutputType = {
     id: number
-    status: number
+    userId: number
+    name: number
     repoUrl: number
+    repoFullName: number
+    repoId: number
+    defaultBranch: number
+    deployedUrl: number
+    webhookId: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type JobMinAggregateInputType = {
+  export type ProjectAvgAggregateInputType = {
+    repoId?: true
+  }
+
+  export type ProjectSumAggregateInputType = {
+    repoId?: true
+  }
+
+  export type ProjectMinAggregateInputType = {
     id?: true
-    status?: true
+    userId?: true
+    name?: true
     repoUrl?: true
+    repoFullName?: true
+    repoId?: true
+    defaultBranch?: true
+    deployedUrl?: true
+    webhookId?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type JobMaxAggregateInputType = {
+  export type ProjectMaxAggregateInputType = {
     id?: true
-    status?: true
+    userId?: true
+    name?: true
     repoUrl?: true
+    repoFullName?: true
+    repoId?: true
+    defaultBranch?: true
+    deployedUrl?: true
+    webhookId?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type JobCountAggregateInputType = {
+  export type ProjectCountAggregateInputType = {
     id?: true
-    status?: true
+    userId?: true
+    name?: true
     repoUrl?: true
+    repoFullName?: true
+    repoId?: true
+    defaultBranch?: true
+    deployedUrl?: true
+    webhookId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type JobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Job to aggregate.
+     * Filter which Project to aggregate.
      */
-    where?: JobWhereInput
+    where?: ProjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Jobs to fetch.
+     * Determine the order of Projects to fetch.
      */
-    orderBy?: JobOrderByWithRelationInput | JobOrderByWithRelationInput[]
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: JobWhereUniqueInput
+    cursor?: ProjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Jobs from the position of the cursor.
+     * Take `±n` Projects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Jobs.
+     * Skip the first `n` Projects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Jobs
+     * Count returned Projects
     **/
-    _count?: true | JobCountAggregateInputType
+    _count?: true | ProjectCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProjectAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProjectSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: JobMinAggregateInputType
+    _min?: ProjectMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: JobMaxAggregateInputType
+    _max?: ProjectMaxAggregateInputType
   }
 
-  export type GetJobAggregateType<T extends JobAggregateArgs> = {
-        [P in keyof T & keyof AggregateJob]: P extends '_count' | 'count'
+  export type GetProjectAggregateType<T extends ProjectAggregateArgs> = {
+        [P in keyof T & keyof AggregateProject]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateJob[P]>
-      : GetScalarType<T[P], AggregateJob[P]>
+        : GetScalarType<T[P], AggregateProject[P]>
+      : GetScalarType<T[P], AggregateProject[P]>
   }
 
 
 
 
-  export type JobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobWhereInput
-    orderBy?: JobOrderByWithAggregationInput | JobOrderByWithAggregationInput[]
-    by: JobScalarFieldEnum[] | JobScalarFieldEnum
-    having?: JobScalarWhereWithAggregatesInput
+  export type ProjectGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectWhereInput
+    orderBy?: ProjectOrderByWithAggregationInput | ProjectOrderByWithAggregationInput[]
+    by: ProjectScalarFieldEnum[] | ProjectScalarFieldEnum
+    having?: ProjectScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: JobCountAggregateInputType | true
-    _min?: JobMinAggregateInputType
-    _max?: JobMaxAggregateInputType
+    _count?: ProjectCountAggregateInputType | true
+    _avg?: ProjectAvgAggregateInputType
+    _sum?: ProjectSumAggregateInputType
+    _min?: ProjectMinAggregateInputType
+    _max?: ProjectMaxAggregateInputType
   }
 
-  export type JobGroupByOutputType = {
+  export type ProjectGroupByOutputType = {
     id: string
-    status: $Enums.JobStatus
+    userId: string
+    name: string
     repoUrl: string
+    repoFullName: string
+    repoId: bigint
+    defaultBranch: string
+    deployedUrl: string | null
+    webhookId: string | null
     createdAt: Date
     updatedAt: Date
-    _count: JobCountAggregateOutputType | null
-    _min: JobMinAggregateOutputType | null
-    _max: JobMaxAggregateOutputType | null
+    _count: ProjectCountAggregateOutputType | null
+    _avg: ProjectAvgAggregateOutputType | null
+    _sum: ProjectSumAggregateOutputType | null
+    _min: ProjectMinAggregateOutputType | null
+    _max: ProjectMaxAggregateOutputType | null
   }
 
-  type GetJobGroupByPayload<T extends JobGroupByArgs> = Prisma.PrismaPromise<
+  type GetProjectGroupByPayload<T extends ProjectGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<JobGroupByOutputType, T['by']> &
+      PickEnumerable<ProjectGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof JobGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ProjectGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], JobGroupByOutputType[P]>
-            : GetScalarType<T[P], JobGroupByOutputType[P]>
+              : GetScalarType<T[P], ProjectGroupByOutputType[P]>
+            : GetScalarType<T[P], ProjectGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type JobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ProjectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    status?: boolean
+    userId?: boolean
+    name?: boolean
     repoUrl?: boolean
+    repoFullName?: boolean
+    repoId?: boolean
+    defaultBranch?: boolean
+    deployedUrl?: boolean
+    webhookId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["job"]>
+    deployments?: boolean | Project$deploymentsArgs<ExtArgs>
+    envVars?: boolean | Project$envVarsArgs<ExtArgs>
+    _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["project"]>
 
-  export type JobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ProjectSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    status?: boolean
+    userId?: boolean
+    name?: boolean
     repoUrl?: boolean
+    repoFullName?: boolean
+    repoId?: boolean
+    defaultBranch?: boolean
+    deployedUrl?: boolean
+    webhookId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["job"]>
+  }, ExtArgs["result"]["project"]>
 
-  export type JobSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ProjectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    status?: boolean
+    userId?: boolean
+    name?: boolean
     repoUrl?: boolean
+    repoFullName?: boolean
+    repoId?: boolean
+    defaultBranch?: boolean
+    deployedUrl?: boolean
+    webhookId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["job"]>
+  }, ExtArgs["result"]["project"]>
 
-  export type JobSelectScalar = {
+  export type ProjectSelectScalar = {
     id?: boolean
-    status?: boolean
+    userId?: boolean
+    name?: boolean
     repoUrl?: boolean
+    repoFullName?: boolean
+    repoId?: boolean
+    defaultBranch?: boolean
+    deployedUrl?: boolean
+    webhookId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type JobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "status" | "repoUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "repoUrl" | "repoFullName" | "repoId" | "defaultBranch" | "deployedUrl" | "webhookId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deployments?: boolean | Project$deploymentsArgs<ExtArgs>
+    envVars?: boolean | Project$envVarsArgs<ExtArgs>
+    _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ProjectIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
-  export type $JobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Job"
-    objects: {}
+  export type $ProjectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Project"
+    objects: {
+      deployments: Prisma.$DeploymentPayload<ExtArgs>[]
+      envVars: Prisma.$EnvironmentVariablePayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      status: $Enums.JobStatus
+      userId: string
+      name: string
       repoUrl: string
+      repoFullName: string
+      repoId: bigint
+      defaultBranch: string
+      deployedUrl: string | null
+      webhookId: string | null
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["job"]>
+    }, ExtArgs["result"]["project"]>
     composites: {}
   }
 
-  type JobGetPayload<S extends boolean | null | undefined | JobDefaultArgs> = $Result.GetResult<Prisma.$JobPayload, S>
+  type ProjectGetPayload<S extends boolean | null | undefined | ProjectDefaultArgs> = $Result.GetResult<Prisma.$ProjectPayload, S>
 
-  type JobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<JobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: JobCountAggregateInputType | true
+  type ProjectCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProjectFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProjectCountAggregateInputType | true
     }
 
-  export interface JobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Job'], meta: { name: 'Job' } }
+  export interface ProjectDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Project'], meta: { name: 'Project' } }
     /**
-     * Find zero or one Job that matches the filter.
-     * @param {JobFindUniqueArgs} args - Arguments to find a Job
+     * Find zero or one Project that matches the filter.
+     * @param {ProjectFindUniqueArgs} args - Arguments to find a Project
      * @example
-     * // Get one Job
-     * const job = await prisma.job.findUnique({
+     * // Get one Project
+     * const project = await prisma.project.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends JobFindUniqueArgs>(args: SelectSubset<T, JobFindUniqueArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends ProjectFindUniqueArgs>(args: SelectSubset<T, ProjectFindUniqueArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Job that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Project that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {JobFindUniqueOrThrowArgs} args - Arguments to find a Job
+     * @param {ProjectFindUniqueOrThrowArgs} args - Arguments to find a Project
      * @example
-     * // Get one Job
-     * const job = await prisma.job.findUniqueOrThrow({
+     * // Get one Project
+     * const project = await prisma.project.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends JobFindUniqueOrThrowArgs>(args: SelectSubset<T, JobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends ProjectFindUniqueOrThrowArgs>(args: SelectSubset<T, ProjectFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Job that matches the filter.
+     * Find the first Project that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobFindFirstArgs} args - Arguments to find a Job
+     * @param {ProjectFindFirstArgs} args - Arguments to find a Project
      * @example
-     * // Get one Job
-     * const job = await prisma.job.findFirst({
+     * // Get one Project
+     * const project = await prisma.project.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends JobFindFirstArgs>(args?: SelectSubset<T, JobFindFirstArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends ProjectFindFirstArgs>(args?: SelectSubset<T, ProjectFindFirstArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Job that matches the filter or
+     * Find the first Project that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobFindFirstOrThrowArgs} args - Arguments to find a Job
+     * @param {ProjectFindFirstOrThrowArgs} args - Arguments to find a Project
      * @example
-     * // Get one Job
-     * const job = await prisma.job.findFirstOrThrow({
+     * // Get one Project
+     * const project = await prisma.project.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends JobFindFirstOrThrowArgs>(args?: SelectSubset<T, JobFindFirstOrThrowArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends ProjectFindFirstOrThrowArgs>(args?: SelectSubset<T, ProjectFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Jobs that matches the filter.
+     * Find zero or more Projects that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {ProjectFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Jobs
-     * const jobs = await prisma.job.findMany()
+     * // Get all Projects
+     * const projects = await prisma.project.findMany()
      * 
-     * // Get first 10 Jobs
-     * const jobs = await prisma.job.findMany({ take: 10 })
+     * // Get first 10 Projects
+     * const projects = await prisma.project.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const jobWithIdOnly = await prisma.job.findMany({ select: { id: true } })
+     * const projectWithIdOnly = await prisma.project.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends JobFindManyArgs>(args?: SelectSubset<T, JobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends ProjectFindManyArgs>(args?: SelectSubset<T, ProjectFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Job.
-     * @param {JobCreateArgs} args - Arguments to create a Job.
+     * Create a Project.
+     * @param {ProjectCreateArgs} args - Arguments to create a Project.
      * @example
-     * // Create one Job
-     * const Job = await prisma.job.create({
+     * // Create one Project
+     * const Project = await prisma.project.create({
      *   data: {
-     *     // ... data to create a Job
+     *     // ... data to create a Project
      *   }
      * })
      * 
      */
-    create<T extends JobCreateArgs>(args: SelectSubset<T, JobCreateArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends ProjectCreateArgs>(args: SelectSubset<T, ProjectCreateArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Jobs.
-     * @param {JobCreateManyArgs} args - Arguments to create many Jobs.
+     * Create many Projects.
+     * @param {ProjectCreateManyArgs} args - Arguments to create many Projects.
      * @example
-     * // Create many Jobs
-     * const job = await prisma.job.createMany({
+     * // Create many Projects
+     * const project = await prisma.project.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends JobCreateManyArgs>(args?: SelectSubset<T, JobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends ProjectCreateManyArgs>(args?: SelectSubset<T, ProjectCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Jobs and returns the data saved in the database.
-     * @param {JobCreateManyAndReturnArgs} args - Arguments to create many Jobs.
+     * Create many Projects and returns the data saved in the database.
+     * @param {ProjectCreateManyAndReturnArgs} args - Arguments to create many Projects.
      * @example
-     * // Create many Jobs
-     * const job = await prisma.job.createManyAndReturn({
+     * // Create many Projects
+     * const project = await prisma.project.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Jobs and only return the `id`
-     * const jobWithIdOnly = await prisma.job.createManyAndReturn({
+     * // Create many Projects and only return the `id`
+     * const projectWithIdOnly = await prisma.project.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -1253,28 +1729,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends JobCreateManyAndReturnArgs>(args?: SelectSubset<T, JobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends ProjectCreateManyAndReturnArgs>(args?: SelectSubset<T, ProjectCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Job.
-     * @param {JobDeleteArgs} args - Arguments to delete one Job.
+     * Delete a Project.
+     * @param {ProjectDeleteArgs} args - Arguments to delete one Project.
      * @example
-     * // Delete one Job
-     * const Job = await prisma.job.delete({
+     * // Delete one Project
+     * const Project = await prisma.project.delete({
      *   where: {
-     *     // ... filter to delete one Job
+     *     // ... filter to delete one Project
      *   }
      * })
      * 
      */
-    delete<T extends JobDeleteArgs>(args: SelectSubset<T, JobDeleteArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends ProjectDeleteArgs>(args: SelectSubset<T, ProjectDeleteArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Job.
-     * @param {JobUpdateArgs} args - Arguments to update one Job.
+     * Update one Project.
+     * @param {ProjectUpdateArgs} args - Arguments to update one Project.
      * @example
-     * // Update one Job
-     * const job = await prisma.job.update({
+     * // Update one Project
+     * const project = await prisma.project.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1284,30 +1760,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends JobUpdateArgs>(args: SelectSubset<T, JobUpdateArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends ProjectUpdateArgs>(args: SelectSubset<T, ProjectUpdateArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Jobs.
-     * @param {JobDeleteManyArgs} args - Arguments to filter Jobs to delete.
+     * Delete zero or more Projects.
+     * @param {ProjectDeleteManyArgs} args - Arguments to filter Projects to delete.
      * @example
-     * // Delete a few Jobs
-     * const { count } = await prisma.job.deleteMany({
+     * // Delete a few Projects
+     * const { count } = await prisma.project.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends JobDeleteManyArgs>(args?: SelectSubset<T, JobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends ProjectDeleteManyArgs>(args?: SelectSubset<T, ProjectDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Jobs.
+     * Update zero or more Projects.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ProjectUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Jobs
-     * const job = await prisma.job.updateMany({
+     * // Update many Projects
+     * const project = await prisma.project.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1317,14 +1793,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends JobUpdateManyArgs>(args: SelectSubset<T, JobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends ProjectUpdateManyArgs>(args: SelectSubset<T, ProjectUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Jobs and returns the data updated in the database.
-     * @param {JobUpdateManyAndReturnArgs} args - Arguments to update many Jobs.
+     * Update zero or more Projects and returns the data updated in the database.
+     * @param {ProjectUpdateManyAndReturnArgs} args - Arguments to update many Projects.
      * @example
-     * // Update many Jobs
-     * const job = await prisma.job.updateManyAndReturn({
+     * // Update many Projects
+     * const project = await prisma.project.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1333,8 +1809,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Jobs and only return the `id`
-     * const jobWithIdOnly = await prisma.job.updateManyAndReturn({
+     * // Update zero or more Projects and only return the `id`
+     * const projectWithIdOnly = await prisma.project.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -1347,56 +1823,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends JobUpdateManyAndReturnArgs>(args: SelectSubset<T, JobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends ProjectUpdateManyAndReturnArgs>(args: SelectSubset<T, ProjectUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Job.
-     * @param {JobUpsertArgs} args - Arguments to update or create a Job.
+     * Create or update one Project.
+     * @param {ProjectUpsertArgs} args - Arguments to update or create a Project.
      * @example
-     * // Update or create a Job
-     * const job = await prisma.job.upsert({
+     * // Update or create a Project
+     * const project = await prisma.project.upsert({
      *   create: {
-     *     // ... data to create a Job
+     *     // ... data to create a Project
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Job we want to update
+     *     // ... the filter for the Project we want to update
      *   }
      * })
      */
-    upsert<T extends JobUpsertArgs>(args: SelectSubset<T, JobUpsertArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends ProjectUpsertArgs>(args: SelectSubset<T, ProjectUpsertArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Jobs.
+     * Count the number of Projects.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobCountArgs} args - Arguments to filter Jobs to count.
+     * @param {ProjectCountArgs} args - Arguments to filter Projects to count.
      * @example
-     * // Count the number of Jobs
-     * const count = await prisma.job.count({
+     * // Count the number of Projects
+     * const count = await prisma.project.count({
      *   where: {
-     *     // ... the filter for the Jobs we want to count
+     *     // ... the filter for the Projects we want to count
      *   }
      * })
     **/
-    count<T extends JobCountArgs>(
-      args?: Subset<T, JobCountArgs>,
+    count<T extends ProjectCountArgs>(
+      args?: Subset<T, ProjectCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], JobCountAggregateOutputType>
+          : GetScalarType<T['select'], ProjectCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Job.
+     * Allows you to perform aggregations operations on a Project.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ProjectAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -1416,13 +1892,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends JobAggregateArgs>(args: Subset<T, JobAggregateArgs>): Prisma.PrismaPromise<GetJobAggregateType<T>>
+    aggregate<T extends ProjectAggregateArgs>(args: Subset<T, ProjectAggregateArgs>): Prisma.PrismaPromise<GetProjectAggregateType<T>>
 
     /**
-     * Group by Job.
+     * Group by Project.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobGroupByArgs} args - Group by arguments.
+     * @param {ProjectGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -1437,14 +1913,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends JobGroupByArgs,
+      T extends ProjectGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: JobGroupByArgs['orderBy'] }
-        : { orderBy?: JobGroupByArgs['orderBy'] },
+        ? { orderBy: ProjectGroupByArgs['orderBy'] }
+        : { orderBy?: ProjectGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -1493,21 +1969,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, JobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, ProjectGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProjectGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Job model
+   * Fields of the Project model
    */
-  readonly fields: JobFieldRefs;
+  readonly fields: ProjectFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Job.
+   * The delegate class that acts as a "Promise-like" for Project.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__JobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    deployments<T extends Project$deploymentsArgs<ExtArgs> = {}>(args?: Subset<T, Project$deploymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    envVars<T extends Project$envVarsArgs<ExtArgs> = {}>(args?: Subset<T, Project$envVarsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1534,382 +2012,3773 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Job model
+   * Fields of the Project model
    */
-  interface JobFieldRefs {
-    readonly id: FieldRef<"Job", 'String'>
-    readonly status: FieldRef<"Job", 'JobStatus'>
-    readonly repoUrl: FieldRef<"Job", 'String'>
-    readonly createdAt: FieldRef<"Job", 'DateTime'>
-    readonly updatedAt: FieldRef<"Job", 'DateTime'>
+  interface ProjectFieldRefs {
+    readonly id: FieldRef<"Project", 'String'>
+    readonly userId: FieldRef<"Project", 'String'>
+    readonly name: FieldRef<"Project", 'String'>
+    readonly repoUrl: FieldRef<"Project", 'String'>
+    readonly repoFullName: FieldRef<"Project", 'String'>
+    readonly repoId: FieldRef<"Project", 'BigInt'>
+    readonly defaultBranch: FieldRef<"Project", 'String'>
+    readonly deployedUrl: FieldRef<"Project", 'String'>
+    readonly webhookId: FieldRef<"Project", 'String'>
+    readonly createdAt: FieldRef<"Project", 'DateTime'>
+    readonly updatedAt: FieldRef<"Project", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Job findUnique
+   * Project findUnique
    */
-  export type JobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * Filter, which Job to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: JobWhereUniqueInput
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Project to fetch.
+     */
+    where: ProjectWhereUniqueInput
   }
 
   /**
-   * Job findUniqueOrThrow
+   * Project findUniqueOrThrow
    */
-  export type JobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * Filter, which Job to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: JobWhereUniqueInput
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Project to fetch.
+     */
+    where: ProjectWhereUniqueInput
   }
 
   /**
-   * Job findFirst
+   * Project findFirst
    */
-  export type JobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * Filter, which Job to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: JobWhereInput
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Project to fetch.
+     */
+    where?: ProjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Jobs to fetch.
+     * Determine the order of Projects to fetch.
      */
-    orderBy?: JobOrderByWithRelationInput | JobOrderByWithRelationInput[]
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Jobs.
+     * Sets the position for searching for Projects.
      */
-    cursor?: JobWhereUniqueInput
+    cursor?: ProjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Jobs from the position of the cursor.
+     * Take `±n` Projects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Jobs.
+     * Skip the first `n` Projects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Jobs.
+     * Filter by unique combinations of Projects.
      */
-    distinct?: JobScalarFieldEnum | JobScalarFieldEnum[]
+    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
   }
 
   /**
-   * Job findFirstOrThrow
+   * Project findFirstOrThrow
    */
-  export type JobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * Filter, which Job to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: JobWhereInput
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Project to fetch.
+     */
+    where?: ProjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Jobs to fetch.
+     * Determine the order of Projects to fetch.
      */
-    orderBy?: JobOrderByWithRelationInput | JobOrderByWithRelationInput[]
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Jobs.
+     * Sets the position for searching for Projects.
      */
-    cursor?: JobWhereUniqueInput
+    cursor?: ProjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Jobs from the position of the cursor.
+     * Take `±n` Projects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Jobs.
+     * Skip the first `n` Projects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Jobs.
+     * Filter by unique combinations of Projects.
      */
-    distinct?: JobScalarFieldEnum | JobScalarFieldEnum[]
+    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
   }
 
   /**
-   * Job findMany
+   * Project findMany
    */
-  export type JobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * Filter, which Jobs to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: JobWhereInput
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Projects to fetch.
+     */
+    where?: ProjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Jobs to fetch.
+     * Determine the order of Projects to fetch.
      */
-    orderBy?: JobOrderByWithRelationInput | JobOrderByWithRelationInput[]
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Jobs.
+     * Sets the position for listing Projects.
      */
-    cursor?: JobWhereUniqueInput
+    cursor?: ProjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Jobs from the position of the cursor.
+     * Take `±n` Projects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Jobs.
+     * Skip the first `n` Projects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Jobs.
+     * Filter by unique combinations of Projects.
      */
-    distinct?: JobScalarFieldEnum | JobScalarFieldEnum[]
+    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
   }
 
   /**
-   * Job create
+   * Project create
    */
-  export type JobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * The data needed to create a Job.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<JobCreateInput, JobUncheckedCreateInput>
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Project.
+     */
+    data: XOR<ProjectCreateInput, ProjectUncheckedCreateInput>
   }
 
   /**
-   * Job createMany
+   * Project createMany
    */
-  export type JobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Jobs.
+     * The data used to create many Projects.
      */
-    data: JobCreateManyInput | JobCreateManyInput[]
+    data: ProjectCreateManyInput | ProjectCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Job createManyAndReturn
+   * Project createManyAndReturn
    */
-  export type JobCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelectCreateManyAndReturn<ExtArgs> | null
+    select?: ProjectSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * The data used to create many Jobs.
+     * The data used to create many Projects.
      */
-    data: JobCreateManyInput | JobCreateManyInput[]
+    data: ProjectCreateManyInput | ProjectCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Job update
+   * Project update
    */
-  export type JobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * The data needed to update a Job.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<JobUpdateInput, JobUncheckedUpdateInput>
+    include?: ProjectInclude<ExtArgs> | null
     /**
-     * Choose, which Job to update.
+     * The data needed to update a Project.
      */
-    where: JobWhereUniqueInput
+    data: XOR<ProjectUpdateInput, ProjectUncheckedUpdateInput>
+    /**
+     * Choose, which Project to update.
+     */
+    where: ProjectWhereUniqueInput
   }
 
   /**
-   * Job updateMany
+   * Project updateMany
    */
-  export type JobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Jobs.
+     * The data used to update Projects.
      */
-    data: XOR<JobUpdateManyMutationInput, JobUncheckedUpdateManyInput>
+    data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyInput>
     /**
-     * Filter which Jobs to update
+     * Filter which Projects to update
      */
-    where?: JobWhereInput
+    where?: ProjectWhereInput
     /**
-     * Limit how many Jobs to update.
+     * Limit how many Projects to update.
      */
     limit?: number
   }
 
   /**
-   * Job updateManyAndReturn
+   * Project updateManyAndReturn
    */
-  export type JobUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: ProjectSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * The data used to update Jobs.
+     * The data used to update Projects.
      */
-    data: XOR<JobUpdateManyMutationInput, JobUncheckedUpdateManyInput>
+    data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyInput>
     /**
-     * Filter which Jobs to update
+     * Filter which Projects to update
      */
-    where?: JobWhereInput
+    where?: ProjectWhereInput
     /**
-     * Limit how many Jobs to update.
+     * Limit how many Projects to update.
      */
     limit?: number
   }
 
   /**
-   * Job upsert
+   * Project upsert
    */
-  export type JobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * The filter to search for the Job to update in case it exists.
+     * Choose, which related nodes to fetch as well
      */
-    where: JobWhereUniqueInput
+    include?: ProjectInclude<ExtArgs> | null
     /**
-     * In case the Job found by the `where` argument doesn't exist, create a new Job with this data.
+     * The filter to search for the Project to update in case it exists.
      */
-    create: XOR<JobCreateInput, JobUncheckedCreateInput>
+    where: ProjectWhereUniqueInput
     /**
-     * In case the Job was found with the provided `where` argument, update it with this data.
+     * In case the Project found by the `where` argument doesn't exist, create a new Project with this data.
      */
-    update: XOR<JobUpdateInput, JobUncheckedUpdateInput>
+    create: XOR<ProjectCreateInput, ProjectUncheckedCreateInput>
+    /**
+     * In case the Project was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProjectUpdateInput, ProjectUncheckedUpdateInput>
   }
 
   /**
-   * Job delete
+   * Project delete
    */
-  export type JobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Project
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: ProjectSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Project
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: ProjectOmit<ExtArgs> | null
     /**
-     * Filter which Job to delete.
+     * Choose, which related nodes to fetch as well
      */
-    where: JobWhereUniqueInput
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter which Project to delete.
+     */
+    where: ProjectWhereUniqueInput
   }
 
   /**
-   * Job deleteMany
+   * Project deleteMany
    */
-  export type JobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Jobs to delete
+     * Filter which Projects to delete
      */
-    where?: JobWhereInput
+    where?: ProjectWhereInput
     /**
-     * Limit how many Jobs to delete.
+     * Limit how many Projects to delete.
      */
     limit?: number
   }
 
   /**
-   * Job without action
+   * Project.deployments
    */
-  export type JobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Project$deploymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the Deployment
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: DeploymentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the Deployment
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    where?: DeploymentWhereInput
+    orderBy?: DeploymentOrderByWithRelationInput | DeploymentOrderByWithRelationInput[]
+    cursor?: DeploymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeploymentScalarFieldEnum | DeploymentScalarFieldEnum[]
+  }
+
+  /**
+   * Project.envVars
+   */
+  export type Project$envVarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    where?: EnvironmentVariableWhereInput
+    orderBy?: EnvironmentVariableOrderByWithRelationInput | EnvironmentVariableOrderByWithRelationInput[]
+    cursor?: EnvironmentVariableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EnvironmentVariableScalarFieldEnum | EnvironmentVariableScalarFieldEnum[]
+  }
+
+  /**
+   * Project without action
+   */
+  export type ProjectDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EnvironmentVariable
+   */
+
+  export type AggregateEnvironmentVariable = {
+    _count: EnvironmentVariableCountAggregateOutputType | null
+    _min: EnvironmentVariableMinAggregateOutputType | null
+    _max: EnvironmentVariableMaxAggregateOutputType | null
+  }
+
+  export type EnvironmentVariableMinAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    key: string | null
+    value: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EnvironmentVariableMaxAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    key: string | null
+    value: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EnvironmentVariableCountAggregateOutputType = {
+    id: number
+    projectId: number
+    key: number
+    value: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EnvironmentVariableMinAggregateInputType = {
+    id?: true
+    projectId?: true
+    key?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EnvironmentVariableMaxAggregateInputType = {
+    id?: true
+    projectId?: true
+    key?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EnvironmentVariableCountAggregateInputType = {
+    id?: true
+    projectId?: true
+    key?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EnvironmentVariableAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EnvironmentVariable to aggregate.
+     */
+    where?: EnvironmentVariableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnvironmentVariables to fetch.
+     */
+    orderBy?: EnvironmentVariableOrderByWithRelationInput | EnvironmentVariableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EnvironmentVariableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnvironmentVariables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnvironmentVariables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EnvironmentVariables
+    **/
+    _count?: true | EnvironmentVariableCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EnvironmentVariableMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EnvironmentVariableMaxAggregateInputType
+  }
+
+  export type GetEnvironmentVariableAggregateType<T extends EnvironmentVariableAggregateArgs> = {
+        [P in keyof T & keyof AggregateEnvironmentVariable]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEnvironmentVariable[P]>
+      : GetScalarType<T[P], AggregateEnvironmentVariable[P]>
+  }
+
+
+
+
+  export type EnvironmentVariableGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnvironmentVariableWhereInput
+    orderBy?: EnvironmentVariableOrderByWithAggregationInput | EnvironmentVariableOrderByWithAggregationInput[]
+    by: EnvironmentVariableScalarFieldEnum[] | EnvironmentVariableScalarFieldEnum
+    having?: EnvironmentVariableScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EnvironmentVariableCountAggregateInputType | true
+    _min?: EnvironmentVariableMinAggregateInputType
+    _max?: EnvironmentVariableMaxAggregateInputType
+  }
+
+  export type EnvironmentVariableGroupByOutputType = {
+    id: string
+    projectId: string
+    key: string
+    value: string
+    createdAt: Date
+    updatedAt: Date
+    _count: EnvironmentVariableCountAggregateOutputType | null
+    _min: EnvironmentVariableMinAggregateOutputType | null
+    _max: EnvironmentVariableMaxAggregateOutputType | null
+  }
+
+  type GetEnvironmentVariableGroupByPayload<T extends EnvironmentVariableGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EnvironmentVariableGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EnvironmentVariableGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EnvironmentVariableGroupByOutputType[P]>
+            : GetScalarType<T[P], EnvironmentVariableGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EnvironmentVariableSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    key?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["environmentVariable"]>
+
+  export type EnvironmentVariableSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    key?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["environmentVariable"]>
+
+  export type EnvironmentVariableSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    key?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["environmentVariable"]>
+
+  export type EnvironmentVariableSelectScalar = {
+    id?: boolean
+    projectId?: boolean
+    key?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EnvironmentVariableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "key" | "value" | "createdAt" | "updatedAt", ExtArgs["result"]["environmentVariable"]>
+  export type EnvironmentVariableInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type EnvironmentVariableIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type EnvironmentVariableIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+
+  export type $EnvironmentVariablePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EnvironmentVariable"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      projectId: string
+      key: string
+      value: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["environmentVariable"]>
+    composites: {}
+  }
+
+  type EnvironmentVariableGetPayload<S extends boolean | null | undefined | EnvironmentVariableDefaultArgs> = $Result.GetResult<Prisma.$EnvironmentVariablePayload, S>
+
+  type EnvironmentVariableCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EnvironmentVariableFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EnvironmentVariableCountAggregateInputType | true
+    }
+
+  export interface EnvironmentVariableDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EnvironmentVariable'], meta: { name: 'EnvironmentVariable' } }
+    /**
+     * Find zero or one EnvironmentVariable that matches the filter.
+     * @param {EnvironmentVariableFindUniqueArgs} args - Arguments to find a EnvironmentVariable
+     * @example
+     * // Get one EnvironmentVariable
+     * const environmentVariable = await prisma.environmentVariable.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EnvironmentVariableFindUniqueArgs>(args: SelectSubset<T, EnvironmentVariableFindUniqueArgs<ExtArgs>>): Prisma__EnvironmentVariableClient<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EnvironmentVariable that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EnvironmentVariableFindUniqueOrThrowArgs} args - Arguments to find a EnvironmentVariable
+     * @example
+     * // Get one EnvironmentVariable
+     * const environmentVariable = await prisma.environmentVariable.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EnvironmentVariableFindUniqueOrThrowArgs>(args: SelectSubset<T, EnvironmentVariableFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EnvironmentVariableClient<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EnvironmentVariable that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnvironmentVariableFindFirstArgs} args - Arguments to find a EnvironmentVariable
+     * @example
+     * // Get one EnvironmentVariable
+     * const environmentVariable = await prisma.environmentVariable.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EnvironmentVariableFindFirstArgs>(args?: SelectSubset<T, EnvironmentVariableFindFirstArgs<ExtArgs>>): Prisma__EnvironmentVariableClient<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EnvironmentVariable that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnvironmentVariableFindFirstOrThrowArgs} args - Arguments to find a EnvironmentVariable
+     * @example
+     * // Get one EnvironmentVariable
+     * const environmentVariable = await prisma.environmentVariable.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EnvironmentVariableFindFirstOrThrowArgs>(args?: SelectSubset<T, EnvironmentVariableFindFirstOrThrowArgs<ExtArgs>>): Prisma__EnvironmentVariableClient<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EnvironmentVariables that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnvironmentVariableFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EnvironmentVariables
+     * const environmentVariables = await prisma.environmentVariable.findMany()
+     * 
+     * // Get first 10 EnvironmentVariables
+     * const environmentVariables = await prisma.environmentVariable.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const environmentVariableWithIdOnly = await prisma.environmentVariable.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EnvironmentVariableFindManyArgs>(args?: SelectSubset<T, EnvironmentVariableFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EnvironmentVariable.
+     * @param {EnvironmentVariableCreateArgs} args - Arguments to create a EnvironmentVariable.
+     * @example
+     * // Create one EnvironmentVariable
+     * const EnvironmentVariable = await prisma.environmentVariable.create({
+     *   data: {
+     *     // ... data to create a EnvironmentVariable
+     *   }
+     * })
+     * 
+     */
+    create<T extends EnvironmentVariableCreateArgs>(args: SelectSubset<T, EnvironmentVariableCreateArgs<ExtArgs>>): Prisma__EnvironmentVariableClient<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EnvironmentVariables.
+     * @param {EnvironmentVariableCreateManyArgs} args - Arguments to create many EnvironmentVariables.
+     * @example
+     * // Create many EnvironmentVariables
+     * const environmentVariable = await prisma.environmentVariable.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EnvironmentVariableCreateManyArgs>(args?: SelectSubset<T, EnvironmentVariableCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EnvironmentVariables and returns the data saved in the database.
+     * @param {EnvironmentVariableCreateManyAndReturnArgs} args - Arguments to create many EnvironmentVariables.
+     * @example
+     * // Create many EnvironmentVariables
+     * const environmentVariable = await prisma.environmentVariable.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EnvironmentVariables and only return the `id`
+     * const environmentVariableWithIdOnly = await prisma.environmentVariable.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EnvironmentVariableCreateManyAndReturnArgs>(args?: SelectSubset<T, EnvironmentVariableCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EnvironmentVariable.
+     * @param {EnvironmentVariableDeleteArgs} args - Arguments to delete one EnvironmentVariable.
+     * @example
+     * // Delete one EnvironmentVariable
+     * const EnvironmentVariable = await prisma.environmentVariable.delete({
+     *   where: {
+     *     // ... filter to delete one EnvironmentVariable
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EnvironmentVariableDeleteArgs>(args: SelectSubset<T, EnvironmentVariableDeleteArgs<ExtArgs>>): Prisma__EnvironmentVariableClient<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EnvironmentVariable.
+     * @param {EnvironmentVariableUpdateArgs} args - Arguments to update one EnvironmentVariable.
+     * @example
+     * // Update one EnvironmentVariable
+     * const environmentVariable = await prisma.environmentVariable.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EnvironmentVariableUpdateArgs>(args: SelectSubset<T, EnvironmentVariableUpdateArgs<ExtArgs>>): Prisma__EnvironmentVariableClient<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EnvironmentVariables.
+     * @param {EnvironmentVariableDeleteManyArgs} args - Arguments to filter EnvironmentVariables to delete.
+     * @example
+     * // Delete a few EnvironmentVariables
+     * const { count } = await prisma.environmentVariable.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EnvironmentVariableDeleteManyArgs>(args?: SelectSubset<T, EnvironmentVariableDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EnvironmentVariables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnvironmentVariableUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EnvironmentVariables
+     * const environmentVariable = await prisma.environmentVariable.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EnvironmentVariableUpdateManyArgs>(args: SelectSubset<T, EnvironmentVariableUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EnvironmentVariables and returns the data updated in the database.
+     * @param {EnvironmentVariableUpdateManyAndReturnArgs} args - Arguments to update many EnvironmentVariables.
+     * @example
+     * // Update many EnvironmentVariables
+     * const environmentVariable = await prisma.environmentVariable.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EnvironmentVariables and only return the `id`
+     * const environmentVariableWithIdOnly = await prisma.environmentVariable.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EnvironmentVariableUpdateManyAndReturnArgs>(args: SelectSubset<T, EnvironmentVariableUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EnvironmentVariable.
+     * @param {EnvironmentVariableUpsertArgs} args - Arguments to update or create a EnvironmentVariable.
+     * @example
+     * // Update or create a EnvironmentVariable
+     * const environmentVariable = await prisma.environmentVariable.upsert({
+     *   create: {
+     *     // ... data to create a EnvironmentVariable
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EnvironmentVariable we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EnvironmentVariableUpsertArgs>(args: SelectSubset<T, EnvironmentVariableUpsertArgs<ExtArgs>>): Prisma__EnvironmentVariableClient<$Result.GetResult<Prisma.$EnvironmentVariablePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EnvironmentVariables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnvironmentVariableCountArgs} args - Arguments to filter EnvironmentVariables to count.
+     * @example
+     * // Count the number of EnvironmentVariables
+     * const count = await prisma.environmentVariable.count({
+     *   where: {
+     *     // ... the filter for the EnvironmentVariables we want to count
+     *   }
+     * })
+    **/
+    count<T extends EnvironmentVariableCountArgs>(
+      args?: Subset<T, EnvironmentVariableCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EnvironmentVariableCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EnvironmentVariable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnvironmentVariableAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EnvironmentVariableAggregateArgs>(args: Subset<T, EnvironmentVariableAggregateArgs>): Prisma.PrismaPromise<GetEnvironmentVariableAggregateType<T>>
+
+    /**
+     * Group by EnvironmentVariable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnvironmentVariableGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EnvironmentVariableGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EnvironmentVariableGroupByArgs['orderBy'] }
+        : { orderBy?: EnvironmentVariableGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EnvironmentVariableGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEnvironmentVariableGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EnvironmentVariable model
+   */
+  readonly fields: EnvironmentVariableFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EnvironmentVariable.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EnvironmentVariableClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EnvironmentVariable model
+   */
+  interface EnvironmentVariableFieldRefs {
+    readonly id: FieldRef<"EnvironmentVariable", 'String'>
+    readonly projectId: FieldRef<"EnvironmentVariable", 'String'>
+    readonly key: FieldRef<"EnvironmentVariable", 'String'>
+    readonly value: FieldRef<"EnvironmentVariable", 'String'>
+    readonly createdAt: FieldRef<"EnvironmentVariable", 'DateTime'>
+    readonly updatedAt: FieldRef<"EnvironmentVariable", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EnvironmentVariable findUnique
+   */
+  export type EnvironmentVariableFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * Filter, which EnvironmentVariable to fetch.
+     */
+    where: EnvironmentVariableWhereUniqueInput
+  }
+
+  /**
+   * EnvironmentVariable findUniqueOrThrow
+   */
+  export type EnvironmentVariableFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * Filter, which EnvironmentVariable to fetch.
+     */
+    where: EnvironmentVariableWhereUniqueInput
+  }
+
+  /**
+   * EnvironmentVariable findFirst
+   */
+  export type EnvironmentVariableFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * Filter, which EnvironmentVariable to fetch.
+     */
+    where?: EnvironmentVariableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnvironmentVariables to fetch.
+     */
+    orderBy?: EnvironmentVariableOrderByWithRelationInput | EnvironmentVariableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EnvironmentVariables.
+     */
+    cursor?: EnvironmentVariableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnvironmentVariables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnvironmentVariables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnvironmentVariables.
+     */
+    distinct?: EnvironmentVariableScalarFieldEnum | EnvironmentVariableScalarFieldEnum[]
+  }
+
+  /**
+   * EnvironmentVariable findFirstOrThrow
+   */
+  export type EnvironmentVariableFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * Filter, which EnvironmentVariable to fetch.
+     */
+    where?: EnvironmentVariableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnvironmentVariables to fetch.
+     */
+    orderBy?: EnvironmentVariableOrderByWithRelationInput | EnvironmentVariableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EnvironmentVariables.
+     */
+    cursor?: EnvironmentVariableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnvironmentVariables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnvironmentVariables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnvironmentVariables.
+     */
+    distinct?: EnvironmentVariableScalarFieldEnum | EnvironmentVariableScalarFieldEnum[]
+  }
+
+  /**
+   * EnvironmentVariable findMany
+   */
+  export type EnvironmentVariableFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * Filter, which EnvironmentVariables to fetch.
+     */
+    where?: EnvironmentVariableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnvironmentVariables to fetch.
+     */
+    orderBy?: EnvironmentVariableOrderByWithRelationInput | EnvironmentVariableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EnvironmentVariables.
+     */
+    cursor?: EnvironmentVariableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnvironmentVariables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnvironmentVariables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnvironmentVariables.
+     */
+    distinct?: EnvironmentVariableScalarFieldEnum | EnvironmentVariableScalarFieldEnum[]
+  }
+
+  /**
+   * EnvironmentVariable create
+   */
+  export type EnvironmentVariableCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EnvironmentVariable.
+     */
+    data: XOR<EnvironmentVariableCreateInput, EnvironmentVariableUncheckedCreateInput>
+  }
+
+  /**
+   * EnvironmentVariable createMany
+   */
+  export type EnvironmentVariableCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EnvironmentVariables.
+     */
+    data: EnvironmentVariableCreateManyInput | EnvironmentVariableCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EnvironmentVariable createManyAndReturn
+   */
+  export type EnvironmentVariableCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * The data used to create many EnvironmentVariables.
+     */
+    data: EnvironmentVariableCreateManyInput | EnvironmentVariableCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EnvironmentVariable update
+   */
+  export type EnvironmentVariableUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EnvironmentVariable.
+     */
+    data: XOR<EnvironmentVariableUpdateInput, EnvironmentVariableUncheckedUpdateInput>
+    /**
+     * Choose, which EnvironmentVariable to update.
+     */
+    where: EnvironmentVariableWhereUniqueInput
+  }
+
+  /**
+   * EnvironmentVariable updateMany
+   */
+  export type EnvironmentVariableUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EnvironmentVariables.
+     */
+    data: XOR<EnvironmentVariableUpdateManyMutationInput, EnvironmentVariableUncheckedUpdateManyInput>
+    /**
+     * Filter which EnvironmentVariables to update
+     */
+    where?: EnvironmentVariableWhereInput
+    /**
+     * Limit how many EnvironmentVariables to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EnvironmentVariable updateManyAndReturn
+   */
+  export type EnvironmentVariableUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * The data used to update EnvironmentVariables.
+     */
+    data: XOR<EnvironmentVariableUpdateManyMutationInput, EnvironmentVariableUncheckedUpdateManyInput>
+    /**
+     * Filter which EnvironmentVariables to update
+     */
+    where?: EnvironmentVariableWhereInput
+    /**
+     * Limit how many EnvironmentVariables to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EnvironmentVariable upsert
+   */
+  export type EnvironmentVariableUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EnvironmentVariable to update in case it exists.
+     */
+    where: EnvironmentVariableWhereUniqueInput
+    /**
+     * In case the EnvironmentVariable found by the `where` argument doesn't exist, create a new EnvironmentVariable with this data.
+     */
+    create: XOR<EnvironmentVariableCreateInput, EnvironmentVariableUncheckedCreateInput>
+    /**
+     * In case the EnvironmentVariable was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EnvironmentVariableUpdateInput, EnvironmentVariableUncheckedUpdateInput>
+  }
+
+  /**
+   * EnvironmentVariable delete
+   */
+  export type EnvironmentVariableDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+    /**
+     * Filter which EnvironmentVariable to delete.
+     */
+    where: EnvironmentVariableWhereUniqueInput
+  }
+
+  /**
+   * EnvironmentVariable deleteMany
+   */
+  export type EnvironmentVariableDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EnvironmentVariables to delete
+     */
+    where?: EnvironmentVariableWhereInput
+    /**
+     * Limit how many EnvironmentVariables to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EnvironmentVariable without action
+   */
+  export type EnvironmentVariableDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnvironmentVariable
+     */
+    select?: EnvironmentVariableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnvironmentVariable
+     */
+    omit?: EnvironmentVariableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnvironmentVariableInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Deployment
+   */
+
+  export type AggregateDeployment = {
+    _count: DeploymentCountAggregateOutputType | null
+    _min: DeploymentMinAggregateOutputType | null
+    _max: DeploymentMaxAggregateOutputType | null
+  }
+
+  export type DeploymentMinAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    status: $Enums.DeploymentStatus | null
+    branch: string | null
+    commitSha: string | null
+    commitMessage: string | null
+    deployedUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DeploymentMaxAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    status: $Enums.DeploymentStatus | null
+    branch: string | null
+    commitSha: string | null
+    commitMessage: string | null
+    deployedUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DeploymentCountAggregateOutputType = {
+    id: number
+    projectId: number
+    status: number
+    branch: number
+    commitSha: number
+    commitMessage: number
+    deployedUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DeploymentMinAggregateInputType = {
+    id?: true
+    projectId?: true
+    status?: true
+    branch?: true
+    commitSha?: true
+    commitMessage?: true
+    deployedUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DeploymentMaxAggregateInputType = {
+    id?: true
+    projectId?: true
+    status?: true
+    branch?: true
+    commitSha?: true
+    commitMessage?: true
+    deployedUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DeploymentCountAggregateInputType = {
+    id?: true
+    projectId?: true
+    status?: true
+    branch?: true
+    commitSha?: true
+    commitMessage?: true
+    deployedUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DeploymentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Deployment to aggregate.
+     */
+    where?: DeploymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deployments to fetch.
+     */
+    orderBy?: DeploymentOrderByWithRelationInput | DeploymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeploymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deployments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deployments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Deployments
+    **/
+    _count?: true | DeploymentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeploymentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeploymentMaxAggregateInputType
+  }
+
+  export type GetDeploymentAggregateType<T extends DeploymentAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeployment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeployment[P]>
+      : GetScalarType<T[P], AggregateDeployment[P]>
+  }
+
+
+
+
+  export type DeploymentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeploymentWhereInput
+    orderBy?: DeploymentOrderByWithAggregationInput | DeploymentOrderByWithAggregationInput[]
+    by: DeploymentScalarFieldEnum[] | DeploymentScalarFieldEnum
+    having?: DeploymentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeploymentCountAggregateInputType | true
+    _min?: DeploymentMinAggregateInputType
+    _max?: DeploymentMaxAggregateInputType
+  }
+
+  export type DeploymentGroupByOutputType = {
+    id: string
+    projectId: string
+    status: $Enums.DeploymentStatus
+    branch: string
+    commitSha: string | null
+    commitMessage: string | null
+    deployedUrl: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DeploymentCountAggregateOutputType | null
+    _min: DeploymentMinAggregateOutputType | null
+    _max: DeploymentMaxAggregateOutputType | null
+  }
+
+  type GetDeploymentGroupByPayload<T extends DeploymentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DeploymentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeploymentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeploymentGroupByOutputType[P]>
+            : GetScalarType<T[P], DeploymentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeploymentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    status?: boolean
+    branch?: boolean
+    commitSha?: boolean
+    commitMessage?: boolean
+    deployedUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    builds?: boolean | Deployment$buildsArgs<ExtArgs>
+    _count?: boolean | DeploymentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deployment"]>
+
+  export type DeploymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    status?: boolean
+    branch?: boolean
+    commitSha?: boolean
+    commitMessage?: boolean
+    deployedUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deployment"]>
+
+  export type DeploymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    status?: boolean
+    branch?: boolean
+    commitSha?: boolean
+    commitMessage?: boolean
+    deployedUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deployment"]>
+
+  export type DeploymentSelectScalar = {
+    id?: boolean
+    projectId?: boolean
+    status?: boolean
+    branch?: boolean
+    commitSha?: boolean
+    commitMessage?: boolean
+    deployedUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DeploymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "status" | "branch" | "commitSha" | "commitMessage" | "deployedUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["deployment"]>
+  export type DeploymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    builds?: boolean | Deployment$buildsArgs<ExtArgs>
+    _count?: boolean | DeploymentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DeploymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type DeploymentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+
+  export type $DeploymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Deployment"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+      builds: Prisma.$BuildPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      projectId: string
+      status: $Enums.DeploymentStatus
+      branch: string
+      commitSha: string | null
+      commitMessage: string | null
+      deployedUrl: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["deployment"]>
+    composites: {}
+  }
+
+  type DeploymentGetPayload<S extends boolean | null | undefined | DeploymentDefaultArgs> = $Result.GetResult<Prisma.$DeploymentPayload, S>
+
+  type DeploymentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DeploymentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DeploymentCountAggregateInputType | true
+    }
+
+  export interface DeploymentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Deployment'], meta: { name: 'Deployment' } }
+    /**
+     * Find zero or one Deployment that matches the filter.
+     * @param {DeploymentFindUniqueArgs} args - Arguments to find a Deployment
+     * @example
+     * // Get one Deployment
+     * const deployment = await prisma.deployment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DeploymentFindUniqueArgs>(args: SelectSubset<T, DeploymentFindUniqueArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Deployment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DeploymentFindUniqueOrThrowArgs} args - Arguments to find a Deployment
+     * @example
+     * // Get one Deployment
+     * const deployment = await prisma.deployment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DeploymentFindUniqueOrThrowArgs>(args: SelectSubset<T, DeploymentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Deployment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeploymentFindFirstArgs} args - Arguments to find a Deployment
+     * @example
+     * // Get one Deployment
+     * const deployment = await prisma.deployment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DeploymentFindFirstArgs>(args?: SelectSubset<T, DeploymentFindFirstArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Deployment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeploymentFindFirstOrThrowArgs} args - Arguments to find a Deployment
+     * @example
+     * // Get one Deployment
+     * const deployment = await prisma.deployment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DeploymentFindFirstOrThrowArgs>(args?: SelectSubset<T, DeploymentFindFirstOrThrowArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Deployments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeploymentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Deployments
+     * const deployments = await prisma.deployment.findMany()
+     * 
+     * // Get first 10 Deployments
+     * const deployments = await prisma.deployment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deploymentWithIdOnly = await prisma.deployment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DeploymentFindManyArgs>(args?: SelectSubset<T, DeploymentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Deployment.
+     * @param {DeploymentCreateArgs} args - Arguments to create a Deployment.
+     * @example
+     * // Create one Deployment
+     * const Deployment = await prisma.deployment.create({
+     *   data: {
+     *     // ... data to create a Deployment
+     *   }
+     * })
+     * 
+     */
+    create<T extends DeploymentCreateArgs>(args: SelectSubset<T, DeploymentCreateArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Deployments.
+     * @param {DeploymentCreateManyArgs} args - Arguments to create many Deployments.
+     * @example
+     * // Create many Deployments
+     * const deployment = await prisma.deployment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DeploymentCreateManyArgs>(args?: SelectSubset<T, DeploymentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Deployments and returns the data saved in the database.
+     * @param {DeploymentCreateManyAndReturnArgs} args - Arguments to create many Deployments.
+     * @example
+     * // Create many Deployments
+     * const deployment = await prisma.deployment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Deployments and only return the `id`
+     * const deploymentWithIdOnly = await prisma.deployment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DeploymentCreateManyAndReturnArgs>(args?: SelectSubset<T, DeploymentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Deployment.
+     * @param {DeploymentDeleteArgs} args - Arguments to delete one Deployment.
+     * @example
+     * // Delete one Deployment
+     * const Deployment = await prisma.deployment.delete({
+     *   where: {
+     *     // ... filter to delete one Deployment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DeploymentDeleteArgs>(args: SelectSubset<T, DeploymentDeleteArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Deployment.
+     * @param {DeploymentUpdateArgs} args - Arguments to update one Deployment.
+     * @example
+     * // Update one Deployment
+     * const deployment = await prisma.deployment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DeploymentUpdateArgs>(args: SelectSubset<T, DeploymentUpdateArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Deployments.
+     * @param {DeploymentDeleteManyArgs} args - Arguments to filter Deployments to delete.
+     * @example
+     * // Delete a few Deployments
+     * const { count } = await prisma.deployment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DeploymentDeleteManyArgs>(args?: SelectSubset<T, DeploymentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Deployments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeploymentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Deployments
+     * const deployment = await prisma.deployment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DeploymentUpdateManyArgs>(args: SelectSubset<T, DeploymentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Deployments and returns the data updated in the database.
+     * @param {DeploymentUpdateManyAndReturnArgs} args - Arguments to update many Deployments.
+     * @example
+     * // Update many Deployments
+     * const deployment = await prisma.deployment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Deployments and only return the `id`
+     * const deploymentWithIdOnly = await prisma.deployment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DeploymentUpdateManyAndReturnArgs>(args: SelectSubset<T, DeploymentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Deployment.
+     * @param {DeploymentUpsertArgs} args - Arguments to update or create a Deployment.
+     * @example
+     * // Update or create a Deployment
+     * const deployment = await prisma.deployment.upsert({
+     *   create: {
+     *     // ... data to create a Deployment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Deployment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DeploymentUpsertArgs>(args: SelectSubset<T, DeploymentUpsertArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Deployments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeploymentCountArgs} args - Arguments to filter Deployments to count.
+     * @example
+     * // Count the number of Deployments
+     * const count = await prisma.deployment.count({
+     *   where: {
+     *     // ... the filter for the Deployments we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeploymentCountArgs>(
+      args?: Subset<T, DeploymentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeploymentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Deployment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeploymentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeploymentAggregateArgs>(args: Subset<T, DeploymentAggregateArgs>): Prisma.PrismaPromise<GetDeploymentAggregateType<T>>
+
+    /**
+     * Group by Deployment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeploymentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeploymentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeploymentGroupByArgs['orderBy'] }
+        : { orderBy?: DeploymentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeploymentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeploymentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Deployment model
+   */
+  readonly fields: DeploymentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Deployment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DeploymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    builds<T extends Deployment$buildsArgs<ExtArgs> = {}>(args?: Subset<T, Deployment$buildsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Deployment model
+   */
+  interface DeploymentFieldRefs {
+    readonly id: FieldRef<"Deployment", 'String'>
+    readonly projectId: FieldRef<"Deployment", 'String'>
+    readonly status: FieldRef<"Deployment", 'DeploymentStatus'>
+    readonly branch: FieldRef<"Deployment", 'String'>
+    readonly commitSha: FieldRef<"Deployment", 'String'>
+    readonly commitMessage: FieldRef<"Deployment", 'String'>
+    readonly deployedUrl: FieldRef<"Deployment", 'String'>
+    readonly createdAt: FieldRef<"Deployment", 'DateTime'>
+    readonly updatedAt: FieldRef<"Deployment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Deployment findUnique
+   */
+  export type DeploymentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Deployment to fetch.
+     */
+    where: DeploymentWhereUniqueInput
+  }
+
+  /**
+   * Deployment findUniqueOrThrow
+   */
+  export type DeploymentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Deployment to fetch.
+     */
+    where: DeploymentWhereUniqueInput
+  }
+
+  /**
+   * Deployment findFirst
+   */
+  export type DeploymentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Deployment to fetch.
+     */
+    where?: DeploymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deployments to fetch.
+     */
+    orderBy?: DeploymentOrderByWithRelationInput | DeploymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Deployments.
+     */
+    cursor?: DeploymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deployments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deployments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deployments.
+     */
+    distinct?: DeploymentScalarFieldEnum | DeploymentScalarFieldEnum[]
+  }
+
+  /**
+   * Deployment findFirstOrThrow
+   */
+  export type DeploymentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Deployment to fetch.
+     */
+    where?: DeploymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deployments to fetch.
+     */
+    orderBy?: DeploymentOrderByWithRelationInput | DeploymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Deployments.
+     */
+    cursor?: DeploymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deployments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deployments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deployments.
+     */
+    distinct?: DeploymentScalarFieldEnum | DeploymentScalarFieldEnum[]
+  }
+
+  /**
+   * Deployment findMany
+   */
+  export type DeploymentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Deployments to fetch.
+     */
+    where?: DeploymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deployments to fetch.
+     */
+    orderBy?: DeploymentOrderByWithRelationInput | DeploymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Deployments.
+     */
+    cursor?: DeploymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deployments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deployments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deployments.
+     */
+    distinct?: DeploymentScalarFieldEnum | DeploymentScalarFieldEnum[]
+  }
+
+  /**
+   * Deployment create
+   */
+  export type DeploymentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Deployment.
+     */
+    data: XOR<DeploymentCreateInput, DeploymentUncheckedCreateInput>
+  }
+
+  /**
+   * Deployment createMany
+   */
+  export type DeploymentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Deployments.
+     */
+    data: DeploymentCreateManyInput | DeploymentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Deployment createManyAndReturn
+   */
+  export type DeploymentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Deployments.
+     */
+    data: DeploymentCreateManyInput | DeploymentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Deployment update
+   */
+  export type DeploymentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Deployment.
+     */
+    data: XOR<DeploymentUpdateInput, DeploymentUncheckedUpdateInput>
+    /**
+     * Choose, which Deployment to update.
+     */
+    where: DeploymentWhereUniqueInput
+  }
+
+  /**
+   * Deployment updateMany
+   */
+  export type DeploymentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Deployments.
+     */
+    data: XOR<DeploymentUpdateManyMutationInput, DeploymentUncheckedUpdateManyInput>
+    /**
+     * Filter which Deployments to update
+     */
+    where?: DeploymentWhereInput
+    /**
+     * Limit how many Deployments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deployment updateManyAndReturn
+   */
+  export type DeploymentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * The data used to update Deployments.
+     */
+    data: XOR<DeploymentUpdateManyMutationInput, DeploymentUncheckedUpdateManyInput>
+    /**
+     * Filter which Deployments to update
+     */
+    where?: DeploymentWhereInput
+    /**
+     * Limit how many Deployments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Deployment upsert
+   */
+  export type DeploymentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Deployment to update in case it exists.
+     */
+    where: DeploymentWhereUniqueInput
+    /**
+     * In case the Deployment found by the `where` argument doesn't exist, create a new Deployment with this data.
+     */
+    create: XOR<DeploymentCreateInput, DeploymentUncheckedCreateInput>
+    /**
+     * In case the Deployment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeploymentUpdateInput, DeploymentUncheckedUpdateInput>
+  }
+
+  /**
+   * Deployment delete
+   */
+  export type DeploymentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+    /**
+     * Filter which Deployment to delete.
+     */
+    where: DeploymentWhereUniqueInput
+  }
+
+  /**
+   * Deployment deleteMany
+   */
+  export type DeploymentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Deployments to delete
+     */
+    where?: DeploymentWhereInput
+    /**
+     * Limit how many Deployments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deployment.builds
+   */
+  export type Deployment$buildsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    where?: BuildWhereInput
+    orderBy?: BuildOrderByWithRelationInput | BuildOrderByWithRelationInput[]
+    cursor?: BuildWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BuildScalarFieldEnum | BuildScalarFieldEnum[]
+  }
+
+  /**
+   * Deployment without action
+   */
+  export type DeploymentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deployment
+     */
+    select?: DeploymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deployment
+     */
+    omit?: DeploymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeploymentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Build
+   */
+
+  export type AggregateBuild = {
+    _count: BuildCountAggregateOutputType | null
+    _min: BuildMinAggregateOutputType | null
+    _max: BuildMaxAggregateOutputType | null
+  }
+
+  export type BuildMinAggregateOutputType = {
+    id: string | null
+    deploymentId: string | null
+    status: $Enums.BuildStatus | null
+    logs: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BuildMaxAggregateOutputType = {
+    id: string | null
+    deploymentId: string | null
+    status: $Enums.BuildStatus | null
+    logs: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BuildCountAggregateOutputType = {
+    id: number
+    deploymentId: number
+    status: number
+    logs: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BuildMinAggregateInputType = {
+    id?: true
+    deploymentId?: true
+    status?: true
+    logs?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BuildMaxAggregateInputType = {
+    id?: true
+    deploymentId?: true
+    status?: true
+    logs?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BuildCountAggregateInputType = {
+    id?: true
+    deploymentId?: true
+    status?: true
+    logs?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BuildAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Build to aggregate.
+     */
+    where?: BuildWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Builds to fetch.
+     */
+    orderBy?: BuildOrderByWithRelationInput | BuildOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BuildWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Builds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Builds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Builds
+    **/
+    _count?: true | BuildCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BuildMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BuildMaxAggregateInputType
+  }
+
+  export type GetBuildAggregateType<T extends BuildAggregateArgs> = {
+        [P in keyof T & keyof AggregateBuild]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBuild[P]>
+      : GetScalarType<T[P], AggregateBuild[P]>
+  }
+
+
+
+
+  export type BuildGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BuildWhereInput
+    orderBy?: BuildOrderByWithAggregationInput | BuildOrderByWithAggregationInput[]
+    by: BuildScalarFieldEnum[] | BuildScalarFieldEnum
+    having?: BuildScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BuildCountAggregateInputType | true
+    _min?: BuildMinAggregateInputType
+    _max?: BuildMaxAggregateInputType
+  }
+
+  export type BuildGroupByOutputType = {
+    id: string
+    deploymentId: string
+    status: $Enums.BuildStatus
+    logs: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BuildCountAggregateOutputType | null
+    _min: BuildMinAggregateOutputType | null
+    _max: BuildMaxAggregateOutputType | null
+  }
+
+  type GetBuildGroupByPayload<T extends BuildGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BuildGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BuildGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BuildGroupByOutputType[P]>
+            : GetScalarType<T[P], BuildGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BuildSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deploymentId?: boolean
+    status?: boolean
+    logs?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deployment?: boolean | DeploymentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["build"]>
+
+  export type BuildSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deploymentId?: boolean
+    status?: boolean
+    logs?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deployment?: boolean | DeploymentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["build"]>
+
+  export type BuildSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deploymentId?: boolean
+    status?: boolean
+    logs?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deployment?: boolean | DeploymentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["build"]>
+
+  export type BuildSelectScalar = {
+    id?: boolean
+    deploymentId?: boolean
+    status?: boolean
+    logs?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BuildOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "deploymentId" | "status" | "logs" | "createdAt" | "updatedAt", ExtArgs["result"]["build"]>
+  export type BuildInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deployment?: boolean | DeploymentDefaultArgs<ExtArgs>
+  }
+  export type BuildIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deployment?: boolean | DeploymentDefaultArgs<ExtArgs>
+  }
+  export type BuildIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deployment?: boolean | DeploymentDefaultArgs<ExtArgs>
+  }
+
+  export type $BuildPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Build"
+    objects: {
+      deployment: Prisma.$DeploymentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      deploymentId: string
+      status: $Enums.BuildStatus
+      logs: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["build"]>
+    composites: {}
+  }
+
+  type BuildGetPayload<S extends boolean | null | undefined | BuildDefaultArgs> = $Result.GetResult<Prisma.$BuildPayload, S>
+
+  type BuildCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BuildFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BuildCountAggregateInputType | true
+    }
+
+  export interface BuildDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Build'], meta: { name: 'Build' } }
+    /**
+     * Find zero or one Build that matches the filter.
+     * @param {BuildFindUniqueArgs} args - Arguments to find a Build
+     * @example
+     * // Get one Build
+     * const build = await prisma.build.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BuildFindUniqueArgs>(args: SelectSubset<T, BuildFindUniqueArgs<ExtArgs>>): Prisma__BuildClient<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Build that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BuildFindUniqueOrThrowArgs} args - Arguments to find a Build
+     * @example
+     * // Get one Build
+     * const build = await prisma.build.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BuildFindUniqueOrThrowArgs>(args: SelectSubset<T, BuildFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BuildClient<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Build that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BuildFindFirstArgs} args - Arguments to find a Build
+     * @example
+     * // Get one Build
+     * const build = await prisma.build.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BuildFindFirstArgs>(args?: SelectSubset<T, BuildFindFirstArgs<ExtArgs>>): Prisma__BuildClient<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Build that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BuildFindFirstOrThrowArgs} args - Arguments to find a Build
+     * @example
+     * // Get one Build
+     * const build = await prisma.build.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BuildFindFirstOrThrowArgs>(args?: SelectSubset<T, BuildFindFirstOrThrowArgs<ExtArgs>>): Prisma__BuildClient<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Builds that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BuildFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Builds
+     * const builds = await prisma.build.findMany()
+     * 
+     * // Get first 10 Builds
+     * const builds = await prisma.build.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const buildWithIdOnly = await prisma.build.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BuildFindManyArgs>(args?: SelectSubset<T, BuildFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Build.
+     * @param {BuildCreateArgs} args - Arguments to create a Build.
+     * @example
+     * // Create one Build
+     * const Build = await prisma.build.create({
+     *   data: {
+     *     // ... data to create a Build
+     *   }
+     * })
+     * 
+     */
+    create<T extends BuildCreateArgs>(args: SelectSubset<T, BuildCreateArgs<ExtArgs>>): Prisma__BuildClient<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Builds.
+     * @param {BuildCreateManyArgs} args - Arguments to create many Builds.
+     * @example
+     * // Create many Builds
+     * const build = await prisma.build.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BuildCreateManyArgs>(args?: SelectSubset<T, BuildCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Builds and returns the data saved in the database.
+     * @param {BuildCreateManyAndReturnArgs} args - Arguments to create many Builds.
+     * @example
+     * // Create many Builds
+     * const build = await prisma.build.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Builds and only return the `id`
+     * const buildWithIdOnly = await prisma.build.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BuildCreateManyAndReturnArgs>(args?: SelectSubset<T, BuildCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Build.
+     * @param {BuildDeleteArgs} args - Arguments to delete one Build.
+     * @example
+     * // Delete one Build
+     * const Build = await prisma.build.delete({
+     *   where: {
+     *     // ... filter to delete one Build
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BuildDeleteArgs>(args: SelectSubset<T, BuildDeleteArgs<ExtArgs>>): Prisma__BuildClient<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Build.
+     * @param {BuildUpdateArgs} args - Arguments to update one Build.
+     * @example
+     * // Update one Build
+     * const build = await prisma.build.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BuildUpdateArgs>(args: SelectSubset<T, BuildUpdateArgs<ExtArgs>>): Prisma__BuildClient<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Builds.
+     * @param {BuildDeleteManyArgs} args - Arguments to filter Builds to delete.
+     * @example
+     * // Delete a few Builds
+     * const { count } = await prisma.build.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BuildDeleteManyArgs>(args?: SelectSubset<T, BuildDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Builds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BuildUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Builds
+     * const build = await prisma.build.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BuildUpdateManyArgs>(args: SelectSubset<T, BuildUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Builds and returns the data updated in the database.
+     * @param {BuildUpdateManyAndReturnArgs} args - Arguments to update many Builds.
+     * @example
+     * // Update many Builds
+     * const build = await prisma.build.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Builds and only return the `id`
+     * const buildWithIdOnly = await prisma.build.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BuildUpdateManyAndReturnArgs>(args: SelectSubset<T, BuildUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Build.
+     * @param {BuildUpsertArgs} args - Arguments to update or create a Build.
+     * @example
+     * // Update or create a Build
+     * const build = await prisma.build.upsert({
+     *   create: {
+     *     // ... data to create a Build
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Build we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BuildUpsertArgs>(args: SelectSubset<T, BuildUpsertArgs<ExtArgs>>): Prisma__BuildClient<$Result.GetResult<Prisma.$BuildPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Builds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BuildCountArgs} args - Arguments to filter Builds to count.
+     * @example
+     * // Count the number of Builds
+     * const count = await prisma.build.count({
+     *   where: {
+     *     // ... the filter for the Builds we want to count
+     *   }
+     * })
+    **/
+    count<T extends BuildCountArgs>(
+      args?: Subset<T, BuildCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BuildCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Build.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BuildAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BuildAggregateArgs>(args: Subset<T, BuildAggregateArgs>): Prisma.PrismaPromise<GetBuildAggregateType<T>>
+
+    /**
+     * Group by Build.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BuildGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BuildGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BuildGroupByArgs['orderBy'] }
+        : { orderBy?: BuildGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BuildGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBuildGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Build model
+   */
+  readonly fields: BuildFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Build.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BuildClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    deployment<T extends DeploymentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DeploymentDefaultArgs<ExtArgs>>): Prisma__DeploymentClient<$Result.GetResult<Prisma.$DeploymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Build model
+   */
+  interface BuildFieldRefs {
+    readonly id: FieldRef<"Build", 'String'>
+    readonly deploymentId: FieldRef<"Build", 'String'>
+    readonly status: FieldRef<"Build", 'BuildStatus'>
+    readonly logs: FieldRef<"Build", 'String'>
+    readonly createdAt: FieldRef<"Build", 'DateTime'>
+    readonly updatedAt: FieldRef<"Build", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Build findUnique
+   */
+  export type BuildFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * Filter, which Build to fetch.
+     */
+    where: BuildWhereUniqueInput
+  }
+
+  /**
+   * Build findUniqueOrThrow
+   */
+  export type BuildFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * Filter, which Build to fetch.
+     */
+    where: BuildWhereUniqueInput
+  }
+
+  /**
+   * Build findFirst
+   */
+  export type BuildFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * Filter, which Build to fetch.
+     */
+    where?: BuildWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Builds to fetch.
+     */
+    orderBy?: BuildOrderByWithRelationInput | BuildOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Builds.
+     */
+    cursor?: BuildWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Builds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Builds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Builds.
+     */
+    distinct?: BuildScalarFieldEnum | BuildScalarFieldEnum[]
+  }
+
+  /**
+   * Build findFirstOrThrow
+   */
+  export type BuildFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * Filter, which Build to fetch.
+     */
+    where?: BuildWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Builds to fetch.
+     */
+    orderBy?: BuildOrderByWithRelationInput | BuildOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Builds.
+     */
+    cursor?: BuildWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Builds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Builds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Builds.
+     */
+    distinct?: BuildScalarFieldEnum | BuildScalarFieldEnum[]
+  }
+
+  /**
+   * Build findMany
+   */
+  export type BuildFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * Filter, which Builds to fetch.
+     */
+    where?: BuildWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Builds to fetch.
+     */
+    orderBy?: BuildOrderByWithRelationInput | BuildOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Builds.
+     */
+    cursor?: BuildWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Builds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Builds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Builds.
+     */
+    distinct?: BuildScalarFieldEnum | BuildScalarFieldEnum[]
+  }
+
+  /**
+   * Build create
+   */
+  export type BuildCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Build.
+     */
+    data: XOR<BuildCreateInput, BuildUncheckedCreateInput>
+  }
+
+  /**
+   * Build createMany
+   */
+  export type BuildCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Builds.
+     */
+    data: BuildCreateManyInput | BuildCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Build createManyAndReturn
+   */
+  export type BuildCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * The data used to create many Builds.
+     */
+    data: BuildCreateManyInput | BuildCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Build update
+   */
+  export type BuildUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Build.
+     */
+    data: XOR<BuildUpdateInput, BuildUncheckedUpdateInput>
+    /**
+     * Choose, which Build to update.
+     */
+    where: BuildWhereUniqueInput
+  }
+
+  /**
+   * Build updateMany
+   */
+  export type BuildUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Builds.
+     */
+    data: XOR<BuildUpdateManyMutationInput, BuildUncheckedUpdateManyInput>
+    /**
+     * Filter which Builds to update
+     */
+    where?: BuildWhereInput
+    /**
+     * Limit how many Builds to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Build updateManyAndReturn
+   */
+  export type BuildUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * The data used to update Builds.
+     */
+    data: XOR<BuildUpdateManyMutationInput, BuildUncheckedUpdateManyInput>
+    /**
+     * Filter which Builds to update
+     */
+    where?: BuildWhereInput
+    /**
+     * Limit how many Builds to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Build upsert
+   */
+  export type BuildUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Build to update in case it exists.
+     */
+    where: BuildWhereUniqueInput
+    /**
+     * In case the Build found by the `where` argument doesn't exist, create a new Build with this data.
+     */
+    create: XOR<BuildCreateInput, BuildUncheckedCreateInput>
+    /**
+     * In case the Build was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BuildUpdateInput, BuildUncheckedUpdateInput>
+  }
+
+  /**
+   * Build delete
+   */
+  export type BuildDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
+    /**
+     * Filter which Build to delete.
+     */
+    where: BuildWhereUniqueInput
+  }
+
+  /**
+   * Build deleteMany
+   */
+  export type BuildDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Builds to delete
+     */
+    where?: BuildWhereInput
+    /**
+     * Limit how many Builds to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Build without action
+   */
+  export type BuildDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Build
+     */
+    select?: BuildSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Build
+     */
+    omit?: BuildOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BuildInclude<ExtArgs> | null
   }
 
 
@@ -1927,15 +5796,60 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const JobScalarFieldEnum: {
+  export const ProjectScalarFieldEnum: {
     id: 'id',
-    status: 'status',
+    userId: 'userId',
+    name: 'name',
     repoUrl: 'repoUrl',
+    repoFullName: 'repoFullName',
+    repoId: 'repoId',
+    defaultBranch: 'defaultBranch',
+    deployedUrl: 'deployedUrl',
+    webhookId: 'webhookId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type JobScalarFieldEnum = (typeof JobScalarFieldEnum)[keyof typeof JobScalarFieldEnum]
+  export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
+
+
+  export const EnvironmentVariableScalarFieldEnum: {
+    id: 'id',
+    projectId: 'projectId',
+    key: 'key',
+    value: 'value',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EnvironmentVariableScalarFieldEnum = (typeof EnvironmentVariableScalarFieldEnum)[keyof typeof EnvironmentVariableScalarFieldEnum]
+
+
+  export const DeploymentScalarFieldEnum: {
+    id: 'id',
+    projectId: 'projectId',
+    status: 'status',
+    branch: 'branch',
+    commitSha: 'commitSha',
+    commitMessage: 'commitMessage',
+    deployedUrl: 'deployedUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DeploymentScalarFieldEnum = (typeof DeploymentScalarFieldEnum)[keyof typeof DeploymentScalarFieldEnum]
+
+
+  export const BuildScalarFieldEnum: {
+    id: 'id',
+    deploymentId: 'deploymentId',
+    status: 'status',
+    logs: 'logs',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BuildScalarFieldEnum = (typeof BuildScalarFieldEnum)[keyof typeof BuildScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -1952,6 +5866,14 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -1974,16 +5896,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'JobStatus'
+   * Reference to a field of type 'BigInt'
    */
-  export type EnumJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobStatus'>
+  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
     
 
 
   /**
-   * Reference to a field of type 'JobStatus[]'
+   * Reference to a field of type 'BigInt[]'
    */
-  export type ListEnumJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobStatus[]'>
+  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
@@ -2002,6 +5924,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DeploymentStatus'
+   */
+  export type EnumDeploymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeploymentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeploymentStatus[]'
+   */
+  export type ListEnumDeploymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeploymentStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'BuildStatus'
+   */
+  export type EnumBuildStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuildStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'BuildStatus[]'
+   */
+  export type ListEnumBuildStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuildStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -2013,115 +5963,627 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
   /**
    * Deep Input Types
    */
 
 
-  export type JobWhereInput = {
-    AND?: JobWhereInput | JobWhereInput[]
-    OR?: JobWhereInput[]
-    NOT?: JobWhereInput | JobWhereInput[]
-    id?: StringFilter<"Job"> | string
-    status?: EnumJobStatusFilter<"Job"> | $Enums.JobStatus
-    repoUrl?: StringFilter<"Job"> | string
-    createdAt?: DateTimeFilter<"Job"> | Date | string
-    updatedAt?: DateTimeFilter<"Job"> | Date | string
+  export type ProjectWhereInput = {
+    AND?: ProjectWhereInput | ProjectWhereInput[]
+    OR?: ProjectWhereInput[]
+    NOT?: ProjectWhereInput | ProjectWhereInput[]
+    id?: StringFilter<"Project"> | string
+    userId?: StringFilter<"Project"> | string
+    name?: StringFilter<"Project"> | string
+    repoUrl?: StringFilter<"Project"> | string
+    repoFullName?: StringFilter<"Project"> | string
+    repoId?: BigIntFilter<"Project"> | bigint | number
+    defaultBranch?: StringFilter<"Project"> | string
+    deployedUrl?: StringNullableFilter<"Project"> | string | null
+    webhookId?: StringNullableFilter<"Project"> | string | null
+    createdAt?: DateTimeFilter<"Project"> | Date | string
+    updatedAt?: DateTimeFilter<"Project"> | Date | string
+    deployments?: DeploymentListRelationFilter
+    envVars?: EnvironmentVariableListRelationFilter
   }
 
-  export type JobOrderByWithRelationInput = {
+  export type ProjectOrderByWithRelationInput = {
     id?: SortOrder
-    status?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
     repoUrl?: SortOrder
+    repoFullName?: SortOrder
+    repoId?: SortOrder
+    defaultBranch?: SortOrder
+    deployedUrl?: SortOrderInput | SortOrder
+    webhookId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deployments?: DeploymentOrderByRelationAggregateInput
+    envVars?: EnvironmentVariableOrderByRelationAggregateInput
   }
 
-  export type JobWhereUniqueInput = Prisma.AtLeast<{
+  export type ProjectWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: JobWhereInput | JobWhereInput[]
-    OR?: JobWhereInput[]
-    NOT?: JobWhereInput | JobWhereInput[]
-    status?: EnumJobStatusFilter<"Job"> | $Enums.JobStatus
-    repoUrl?: StringFilter<"Job"> | string
-    createdAt?: DateTimeFilter<"Job"> | Date | string
-    updatedAt?: DateTimeFilter<"Job"> | Date | string
+    AND?: ProjectWhereInput | ProjectWhereInput[]
+    OR?: ProjectWhereInput[]
+    NOT?: ProjectWhereInput | ProjectWhereInput[]
+    userId?: StringFilter<"Project"> | string
+    name?: StringFilter<"Project"> | string
+    repoUrl?: StringFilter<"Project"> | string
+    repoFullName?: StringFilter<"Project"> | string
+    repoId?: BigIntFilter<"Project"> | bigint | number
+    defaultBranch?: StringFilter<"Project"> | string
+    deployedUrl?: StringNullableFilter<"Project"> | string | null
+    webhookId?: StringNullableFilter<"Project"> | string | null
+    createdAt?: DateTimeFilter<"Project"> | Date | string
+    updatedAt?: DateTimeFilter<"Project"> | Date | string
+    deployments?: DeploymentListRelationFilter
+    envVars?: EnvironmentVariableListRelationFilter
   }, "id">
 
-  export type JobOrderByWithAggregationInput = {
+  export type ProjectOrderByWithAggregationInput = {
     id?: SortOrder
-    status?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
     repoUrl?: SortOrder
+    repoFullName?: SortOrder
+    repoId?: SortOrder
+    defaultBranch?: SortOrder
+    deployedUrl?: SortOrderInput | SortOrder
+    webhookId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: JobCountOrderByAggregateInput
-    _max?: JobMaxOrderByAggregateInput
-    _min?: JobMinOrderByAggregateInput
+    _count?: ProjectCountOrderByAggregateInput
+    _avg?: ProjectAvgOrderByAggregateInput
+    _max?: ProjectMaxOrderByAggregateInput
+    _min?: ProjectMinOrderByAggregateInput
+    _sum?: ProjectSumOrderByAggregateInput
   }
 
-  export type JobScalarWhereWithAggregatesInput = {
-    AND?: JobScalarWhereWithAggregatesInput | JobScalarWhereWithAggregatesInput[]
-    OR?: JobScalarWhereWithAggregatesInput[]
-    NOT?: JobScalarWhereWithAggregatesInput | JobScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Job"> | string
-    status?: EnumJobStatusWithAggregatesFilter<"Job"> | $Enums.JobStatus
-    repoUrl?: StringWithAggregatesFilter<"Job"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Job"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Job"> | Date | string
+  export type ProjectScalarWhereWithAggregatesInput = {
+    AND?: ProjectScalarWhereWithAggregatesInput | ProjectScalarWhereWithAggregatesInput[]
+    OR?: ProjectScalarWhereWithAggregatesInput[]
+    NOT?: ProjectScalarWhereWithAggregatesInput | ProjectScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Project"> | string
+    userId?: StringWithAggregatesFilter<"Project"> | string
+    name?: StringWithAggregatesFilter<"Project"> | string
+    repoUrl?: StringWithAggregatesFilter<"Project"> | string
+    repoFullName?: StringWithAggregatesFilter<"Project"> | string
+    repoId?: BigIntWithAggregatesFilter<"Project"> | bigint | number
+    defaultBranch?: StringWithAggregatesFilter<"Project"> | string
+    deployedUrl?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    webhookId?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
   }
 
-  export type JobCreateInput = {
+  export type EnvironmentVariableWhereInput = {
+    AND?: EnvironmentVariableWhereInput | EnvironmentVariableWhereInput[]
+    OR?: EnvironmentVariableWhereInput[]
+    NOT?: EnvironmentVariableWhereInput | EnvironmentVariableWhereInput[]
+    id?: StringFilter<"EnvironmentVariable"> | string
+    projectId?: StringFilter<"EnvironmentVariable"> | string
+    key?: StringFilter<"EnvironmentVariable"> | string
+    value?: StringFilter<"EnvironmentVariable"> | string
+    createdAt?: DateTimeFilter<"EnvironmentVariable"> | Date | string
+    updatedAt?: DateTimeFilter<"EnvironmentVariable"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }
+
+  export type EnvironmentVariableOrderByWithRelationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+  }
+
+  export type EnvironmentVariableWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    status?: $Enums.JobStatus
+    projectId_key?: EnvironmentVariableProjectIdKeyCompoundUniqueInput
+    AND?: EnvironmentVariableWhereInput | EnvironmentVariableWhereInput[]
+    OR?: EnvironmentVariableWhereInput[]
+    NOT?: EnvironmentVariableWhereInput | EnvironmentVariableWhereInput[]
+    projectId?: StringFilter<"EnvironmentVariable"> | string
+    key?: StringFilter<"EnvironmentVariable"> | string
+    value?: StringFilter<"EnvironmentVariable"> | string
+    createdAt?: DateTimeFilter<"EnvironmentVariable"> | Date | string
+    updatedAt?: DateTimeFilter<"EnvironmentVariable"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }, "id" | "projectId_key">
+
+  export type EnvironmentVariableOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EnvironmentVariableCountOrderByAggregateInput
+    _max?: EnvironmentVariableMaxOrderByAggregateInput
+    _min?: EnvironmentVariableMinOrderByAggregateInput
+  }
+
+  export type EnvironmentVariableScalarWhereWithAggregatesInput = {
+    AND?: EnvironmentVariableScalarWhereWithAggregatesInput | EnvironmentVariableScalarWhereWithAggregatesInput[]
+    OR?: EnvironmentVariableScalarWhereWithAggregatesInput[]
+    NOT?: EnvironmentVariableScalarWhereWithAggregatesInput | EnvironmentVariableScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EnvironmentVariable"> | string
+    projectId?: StringWithAggregatesFilter<"EnvironmentVariable"> | string
+    key?: StringWithAggregatesFilter<"EnvironmentVariable"> | string
+    value?: StringWithAggregatesFilter<"EnvironmentVariable"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"EnvironmentVariable"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EnvironmentVariable"> | Date | string
+  }
+
+  export type DeploymentWhereInput = {
+    AND?: DeploymentWhereInput | DeploymentWhereInput[]
+    OR?: DeploymentWhereInput[]
+    NOT?: DeploymentWhereInput | DeploymentWhereInput[]
+    id?: StringFilter<"Deployment"> | string
+    projectId?: StringFilter<"Deployment"> | string
+    status?: EnumDeploymentStatusFilter<"Deployment"> | $Enums.DeploymentStatus
+    branch?: StringFilter<"Deployment"> | string
+    commitSha?: StringNullableFilter<"Deployment"> | string | null
+    commitMessage?: StringNullableFilter<"Deployment"> | string | null
+    deployedUrl?: StringNullableFilter<"Deployment"> | string | null
+    createdAt?: DateTimeFilter<"Deployment"> | Date | string
+    updatedAt?: DateTimeFilter<"Deployment"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    builds?: BuildListRelationFilter
+  }
+
+  export type DeploymentOrderByWithRelationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    status?: SortOrder
+    branch?: SortOrder
+    commitSha?: SortOrderInput | SortOrder
+    commitMessage?: SortOrderInput | SortOrder
+    deployedUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+    builds?: BuildOrderByRelationAggregateInput
+  }
+
+  export type DeploymentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DeploymentWhereInput | DeploymentWhereInput[]
+    OR?: DeploymentWhereInput[]
+    NOT?: DeploymentWhereInput | DeploymentWhereInput[]
+    projectId?: StringFilter<"Deployment"> | string
+    status?: EnumDeploymentStatusFilter<"Deployment"> | $Enums.DeploymentStatus
+    branch?: StringFilter<"Deployment"> | string
+    commitSha?: StringNullableFilter<"Deployment"> | string | null
+    commitMessage?: StringNullableFilter<"Deployment"> | string | null
+    deployedUrl?: StringNullableFilter<"Deployment"> | string | null
+    createdAt?: DateTimeFilter<"Deployment"> | Date | string
+    updatedAt?: DateTimeFilter<"Deployment"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    builds?: BuildListRelationFilter
+  }, "id">
+
+  export type DeploymentOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    status?: SortOrder
+    branch?: SortOrder
+    commitSha?: SortOrderInput | SortOrder
+    commitMessage?: SortOrderInput | SortOrder
+    deployedUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DeploymentCountOrderByAggregateInput
+    _max?: DeploymentMaxOrderByAggregateInput
+    _min?: DeploymentMinOrderByAggregateInput
+  }
+
+  export type DeploymentScalarWhereWithAggregatesInput = {
+    AND?: DeploymentScalarWhereWithAggregatesInput | DeploymentScalarWhereWithAggregatesInput[]
+    OR?: DeploymentScalarWhereWithAggregatesInput[]
+    NOT?: DeploymentScalarWhereWithAggregatesInput | DeploymentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Deployment"> | string
+    projectId?: StringWithAggregatesFilter<"Deployment"> | string
+    status?: EnumDeploymentStatusWithAggregatesFilter<"Deployment"> | $Enums.DeploymentStatus
+    branch?: StringWithAggregatesFilter<"Deployment"> | string
+    commitSha?: StringNullableWithAggregatesFilter<"Deployment"> | string | null
+    commitMessage?: StringNullableWithAggregatesFilter<"Deployment"> | string | null
+    deployedUrl?: StringNullableWithAggregatesFilter<"Deployment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Deployment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Deployment"> | Date | string
+  }
+
+  export type BuildWhereInput = {
+    AND?: BuildWhereInput | BuildWhereInput[]
+    OR?: BuildWhereInput[]
+    NOT?: BuildWhereInput | BuildWhereInput[]
+    id?: StringFilter<"Build"> | string
+    deploymentId?: StringFilter<"Build"> | string
+    status?: EnumBuildStatusFilter<"Build"> | $Enums.BuildStatus
+    logs?: StringNullableFilter<"Build"> | string | null
+    createdAt?: DateTimeFilter<"Build"> | Date | string
+    updatedAt?: DateTimeFilter<"Build"> | Date | string
+    deployment?: XOR<DeploymentScalarRelationFilter, DeploymentWhereInput>
+  }
+
+  export type BuildOrderByWithRelationInput = {
+    id?: SortOrder
+    deploymentId?: SortOrder
+    status?: SortOrder
+    logs?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deployment?: DeploymentOrderByWithRelationInput
+  }
+
+  export type BuildWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: BuildWhereInput | BuildWhereInput[]
+    OR?: BuildWhereInput[]
+    NOT?: BuildWhereInput | BuildWhereInput[]
+    deploymentId?: StringFilter<"Build"> | string
+    status?: EnumBuildStatusFilter<"Build"> | $Enums.BuildStatus
+    logs?: StringNullableFilter<"Build"> | string | null
+    createdAt?: DateTimeFilter<"Build"> | Date | string
+    updatedAt?: DateTimeFilter<"Build"> | Date | string
+    deployment?: XOR<DeploymentScalarRelationFilter, DeploymentWhereInput>
+  }, "id">
+
+  export type BuildOrderByWithAggregationInput = {
+    id?: SortOrder
+    deploymentId?: SortOrder
+    status?: SortOrder
+    logs?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BuildCountOrderByAggregateInput
+    _max?: BuildMaxOrderByAggregateInput
+    _min?: BuildMinOrderByAggregateInput
+  }
+
+  export type BuildScalarWhereWithAggregatesInput = {
+    AND?: BuildScalarWhereWithAggregatesInput | BuildScalarWhereWithAggregatesInput[]
+    OR?: BuildScalarWhereWithAggregatesInput[]
+    NOT?: BuildScalarWhereWithAggregatesInput | BuildScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Build"> | string
+    deploymentId?: StringWithAggregatesFilter<"Build"> | string
+    status?: EnumBuildStatusWithAggregatesFilter<"Build"> | $Enums.BuildStatus
+    logs?: StringNullableWithAggregatesFilter<"Build"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Build"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Build"> | Date | string
+  }
+
+  export type ProjectCreateInput = {
+    id?: string
+    userId: string
+    name: string
     repoUrl: string
+    repoFullName: string
+    repoId: bigint | number
+    defaultBranch?: string
+    deployedUrl?: string | null
+    webhookId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deployments?: DeploymentCreateNestedManyWithoutProjectInput
+    envVars?: EnvironmentVariableCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    repoUrl: string
+    repoFullName: string
+    repoId: bigint | number
+    defaultBranch?: string
+    deployedUrl?: string | null
+    webhookId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deployments?: DeploymentUncheckedCreateNestedManyWithoutProjectInput
+    envVars?: EnvironmentVariableUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    repoUrl?: StringFieldUpdateOperationsInput | string
+    repoFullName?: StringFieldUpdateOperationsInput | string
+    repoId?: BigIntFieldUpdateOperationsInput | bigint | number
+    defaultBranch?: StringFieldUpdateOperationsInput | string
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deployments?: DeploymentUpdateManyWithoutProjectNestedInput
+    envVars?: EnvironmentVariableUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    repoUrl?: StringFieldUpdateOperationsInput | string
+    repoFullName?: StringFieldUpdateOperationsInput | string
+    repoId?: BigIntFieldUpdateOperationsInput | bigint | number
+    defaultBranch?: StringFieldUpdateOperationsInput | string
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deployments?: DeploymentUncheckedUpdateManyWithoutProjectNestedInput
+    envVars?: EnvironmentVariableUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    repoUrl: string
+    repoFullName: string
+    repoId: bigint | number
+    defaultBranch?: string
+    deployedUrl?: string | null
+    webhookId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type JobUncheckedCreateInput = {
+  export type ProjectUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    repoUrl?: StringFieldUpdateOperationsInput | string
+    repoFullName?: StringFieldUpdateOperationsInput | string
+    repoId?: BigIntFieldUpdateOperationsInput | bigint | number
+    defaultBranch?: StringFieldUpdateOperationsInput | string
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    repoUrl?: StringFieldUpdateOperationsInput | string
+    repoFullName?: StringFieldUpdateOperationsInput | string
+    repoId?: BigIntFieldUpdateOperationsInput | bigint | number
+    defaultBranch?: StringFieldUpdateOperationsInput | string
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnvironmentVariableCreateInput = {
     id?: string
-    status?: $Enums.JobStatus
-    repoUrl: string
+    key: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutEnvVarsInput
+  }
+
+  export type EnvironmentVariableUncheckedCreateInput = {
+    id?: string
+    projectId: string
+    key: string
+    value: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type JobUpdateInput = {
+  export type EnvironmentVariableUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
-    repoUrl?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutEnvVarsNestedInput
+  }
+
+  export type EnvironmentVariableUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
-    repoUrl?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type JobCreateManyInput = {
+  export type EnvironmentVariableCreateManyInput = {
     id?: string
-    status?: $Enums.JobStatus
-    repoUrl: string
+    projectId: string
+    key: string
+    value: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type JobUpdateManyMutationInput = {
+  export type EnvironmentVariableUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
-    repoUrl?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobUncheckedUpdateManyInput = {
+  export type EnvironmentVariableUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
-    repoUrl?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeploymentCreateInput = {
+    id?: string
+    status?: $Enums.DeploymentStatus
+    branch?: string
+    commitSha?: string | null
+    commitMessage?: string | null
+    deployedUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDeploymentsInput
+    builds?: BuildCreateNestedManyWithoutDeploymentInput
+  }
+
+  export type DeploymentUncheckedCreateInput = {
+    id?: string
+    projectId: string
+    status?: $Enums.DeploymentStatus
+    branch?: string
+    commitSha?: string | null
+    commitMessage?: string | null
+    deployedUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    builds?: BuildUncheckedCreateNestedManyWithoutDeploymentInput
+  }
+
+  export type DeploymentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDeploymentsNestedInput
+    builds?: BuildUpdateManyWithoutDeploymentNestedInput
+  }
+
+  export type DeploymentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    builds?: BuildUncheckedUpdateManyWithoutDeploymentNestedInput
+  }
+
+  export type DeploymentCreateManyInput = {
+    id?: string
+    projectId: string
+    status?: $Enums.DeploymentStatus
+    branch?: string
+    commitSha?: string | null
+    commitMessage?: string | null
+    deployedUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeploymentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeploymentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BuildCreateInput = {
+    id?: string
+    status?: $Enums.BuildStatus
+    logs?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deployment: DeploymentCreateNestedOneWithoutBuildsInput
+  }
+
+  export type BuildUncheckedCreateInput = {
+    id?: string
+    deploymentId: string
+    status?: $Enums.BuildStatus
+    logs?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BuildUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBuildStatusFieldUpdateOperationsInput | $Enums.BuildStatus
+    logs?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deployment?: DeploymentUpdateOneRequiredWithoutBuildsNestedInput
+  }
+
+  export type BuildUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deploymentId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBuildStatusFieldUpdateOperationsInput | $Enums.BuildStatus
+    logs?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BuildCreateManyInput = {
+    id?: string
+    deploymentId: string
+    status?: $Enums.BuildStatus
+    logs?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BuildUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBuildStatusFieldUpdateOperationsInput | $Enums.BuildStatus
+    logs?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BuildUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deploymentId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBuildStatusFieldUpdateOperationsInput | $Enums.BuildStatus
+    logs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2141,11 +6603,30 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type EnumJobStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.JobStatus | EnumJobStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumJobStatusFilter<$PrismaModel> | $Enums.JobStatus
+  export type BigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -2159,28 +6640,79 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type JobCountOrderByAggregateInput = {
+  export type DeploymentListRelationFilter = {
+    every?: DeploymentWhereInput
+    some?: DeploymentWhereInput
+    none?: DeploymentWhereInput
+  }
+
+  export type EnvironmentVariableListRelationFilter = {
+    every?: EnvironmentVariableWhereInput
+    some?: EnvironmentVariableWhereInput
+    none?: EnvironmentVariableWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type DeploymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EnvironmentVariableOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProjectCountOrderByAggregateInput = {
     id?: SortOrder
-    status?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
     repoUrl?: SortOrder
+    repoFullName?: SortOrder
+    repoId?: SortOrder
+    defaultBranch?: SortOrder
+    deployedUrl?: SortOrder
+    webhookId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type JobMaxOrderByAggregateInput = {
+  export type ProjectAvgOrderByAggregateInput = {
+    repoId?: SortOrder
+  }
+
+  export type ProjectMaxOrderByAggregateInput = {
     id?: SortOrder
-    status?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
     repoUrl?: SortOrder
+    repoFullName?: SortOrder
+    repoId?: SortOrder
+    defaultBranch?: SortOrder
+    deployedUrl?: SortOrder
+    webhookId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type JobMinOrderByAggregateInput = {
+  export type ProjectMinOrderByAggregateInput = {
     id?: SortOrder
-    status?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
     repoUrl?: SortOrder
+    repoFullName?: SortOrder
+    repoId?: SortOrder
+    defaultBranch?: SortOrder
+    deployedUrl?: SortOrder
+    webhookId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ProjectSumOrderByAggregateInput = {
+    repoId?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2201,14 +6733,38 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type EnumJobStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.JobStatus | EnumJobStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.JobStatus
+  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumJobStatusFilter<$PrismaModel>
-    _max?: NestedEnumJobStatusFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -2225,16 +6781,349 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type ProjectScalarRelationFilter = {
+    is?: ProjectWhereInput
+    isNot?: ProjectWhereInput
+  }
+
+  export type EnvironmentVariableProjectIdKeyCompoundUniqueInput = {
+    projectId: string
+    key: string
+  }
+
+  export type EnvironmentVariableCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnvironmentVariableMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnvironmentVariableMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumDeploymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeploymentStatusFilter<$PrismaModel> | $Enums.DeploymentStatus
+  }
+
+  export type BuildListRelationFilter = {
+    every?: BuildWhereInput
+    some?: BuildWhereInput
+    none?: BuildWhereInput
+  }
+
+  export type BuildOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DeploymentCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    status?: SortOrder
+    branch?: SortOrder
+    commitSha?: SortOrder
+    commitMessage?: SortOrder
+    deployedUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeploymentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    status?: SortOrder
+    branch?: SortOrder
+    commitSha?: SortOrder
+    commitMessage?: SortOrder
+    deployedUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeploymentMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    status?: SortOrder
+    branch?: SortOrder
+    commitSha?: SortOrder
+    commitMessage?: SortOrder
+    deployedUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumDeploymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeploymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeploymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumDeploymentStatusFilter<$PrismaModel>
+  }
+
+  export type EnumBuildStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BuildStatus | EnumBuildStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BuildStatus[] | ListEnumBuildStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BuildStatus[] | ListEnumBuildStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBuildStatusFilter<$PrismaModel> | $Enums.BuildStatus
+  }
+
+  export type DeploymentScalarRelationFilter = {
+    is?: DeploymentWhereInput
+    isNot?: DeploymentWhereInput
+  }
+
+  export type BuildCountOrderByAggregateInput = {
+    id?: SortOrder
+    deploymentId?: SortOrder
+    status?: SortOrder
+    logs?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BuildMaxOrderByAggregateInput = {
+    id?: SortOrder
+    deploymentId?: SortOrder
+    status?: SortOrder
+    logs?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BuildMinOrderByAggregateInput = {
+    id?: SortOrder
+    deploymentId?: SortOrder
+    status?: SortOrder
+    logs?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumBuildStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BuildStatus | EnumBuildStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BuildStatus[] | ListEnumBuildStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BuildStatus[] | ListEnumBuildStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBuildStatusWithAggregatesFilter<$PrismaModel> | $Enums.BuildStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBuildStatusFilter<$PrismaModel>
+    _max?: NestedEnumBuildStatusFilter<$PrismaModel>
+  }
+
+  export type DeploymentCreateNestedManyWithoutProjectInput = {
+    create?: XOR<DeploymentCreateWithoutProjectInput, DeploymentUncheckedCreateWithoutProjectInput> | DeploymentCreateWithoutProjectInput[] | DeploymentUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DeploymentCreateOrConnectWithoutProjectInput | DeploymentCreateOrConnectWithoutProjectInput[]
+    createMany?: DeploymentCreateManyProjectInputEnvelope
+    connect?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+  }
+
+  export type EnvironmentVariableCreateNestedManyWithoutProjectInput = {
+    create?: XOR<EnvironmentVariableCreateWithoutProjectInput, EnvironmentVariableUncheckedCreateWithoutProjectInput> | EnvironmentVariableCreateWithoutProjectInput[] | EnvironmentVariableUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: EnvironmentVariableCreateOrConnectWithoutProjectInput | EnvironmentVariableCreateOrConnectWithoutProjectInput[]
+    createMany?: EnvironmentVariableCreateManyProjectInputEnvelope
+    connect?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+  }
+
+  export type DeploymentUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<DeploymentCreateWithoutProjectInput, DeploymentUncheckedCreateWithoutProjectInput> | DeploymentCreateWithoutProjectInput[] | DeploymentUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DeploymentCreateOrConnectWithoutProjectInput | DeploymentCreateOrConnectWithoutProjectInput[]
+    createMany?: DeploymentCreateManyProjectInputEnvelope
+    connect?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+  }
+
+  export type EnvironmentVariableUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<EnvironmentVariableCreateWithoutProjectInput, EnvironmentVariableUncheckedCreateWithoutProjectInput> | EnvironmentVariableCreateWithoutProjectInput[] | EnvironmentVariableUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: EnvironmentVariableCreateOrConnectWithoutProjectInput | EnvironmentVariableCreateOrConnectWithoutProjectInput[]
+    createMany?: EnvironmentVariableCreateManyProjectInputEnvelope
+    connect?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
-  export type EnumJobStatusFieldUpdateOperationsInput = {
-    set?: $Enums.JobStatus
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type DeploymentUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<DeploymentCreateWithoutProjectInput, DeploymentUncheckedCreateWithoutProjectInput> | DeploymentCreateWithoutProjectInput[] | DeploymentUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DeploymentCreateOrConnectWithoutProjectInput | DeploymentCreateOrConnectWithoutProjectInput[]
+    upsert?: DeploymentUpsertWithWhereUniqueWithoutProjectInput | DeploymentUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: DeploymentCreateManyProjectInputEnvelope
+    set?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+    disconnect?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+    delete?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+    connect?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+    update?: DeploymentUpdateWithWhereUniqueWithoutProjectInput | DeploymentUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: DeploymentUpdateManyWithWhereWithoutProjectInput | DeploymentUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: DeploymentScalarWhereInput | DeploymentScalarWhereInput[]
+  }
+
+  export type EnvironmentVariableUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<EnvironmentVariableCreateWithoutProjectInput, EnvironmentVariableUncheckedCreateWithoutProjectInput> | EnvironmentVariableCreateWithoutProjectInput[] | EnvironmentVariableUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: EnvironmentVariableCreateOrConnectWithoutProjectInput | EnvironmentVariableCreateOrConnectWithoutProjectInput[]
+    upsert?: EnvironmentVariableUpsertWithWhereUniqueWithoutProjectInput | EnvironmentVariableUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: EnvironmentVariableCreateManyProjectInputEnvelope
+    set?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+    disconnect?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+    delete?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+    connect?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+    update?: EnvironmentVariableUpdateWithWhereUniqueWithoutProjectInput | EnvironmentVariableUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: EnvironmentVariableUpdateManyWithWhereWithoutProjectInput | EnvironmentVariableUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: EnvironmentVariableScalarWhereInput | EnvironmentVariableScalarWhereInput[]
+  }
+
+  export type DeploymentUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<DeploymentCreateWithoutProjectInput, DeploymentUncheckedCreateWithoutProjectInput> | DeploymentCreateWithoutProjectInput[] | DeploymentUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DeploymentCreateOrConnectWithoutProjectInput | DeploymentCreateOrConnectWithoutProjectInput[]
+    upsert?: DeploymentUpsertWithWhereUniqueWithoutProjectInput | DeploymentUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: DeploymentCreateManyProjectInputEnvelope
+    set?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+    disconnect?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+    delete?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+    connect?: DeploymentWhereUniqueInput | DeploymentWhereUniqueInput[]
+    update?: DeploymentUpdateWithWhereUniqueWithoutProjectInput | DeploymentUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: DeploymentUpdateManyWithWhereWithoutProjectInput | DeploymentUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: DeploymentScalarWhereInput | DeploymentScalarWhereInput[]
+  }
+
+  export type EnvironmentVariableUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<EnvironmentVariableCreateWithoutProjectInput, EnvironmentVariableUncheckedCreateWithoutProjectInput> | EnvironmentVariableCreateWithoutProjectInput[] | EnvironmentVariableUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: EnvironmentVariableCreateOrConnectWithoutProjectInput | EnvironmentVariableCreateOrConnectWithoutProjectInput[]
+    upsert?: EnvironmentVariableUpsertWithWhereUniqueWithoutProjectInput | EnvironmentVariableUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: EnvironmentVariableCreateManyProjectInputEnvelope
+    set?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+    disconnect?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+    delete?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+    connect?: EnvironmentVariableWhereUniqueInput | EnvironmentVariableWhereUniqueInput[]
+    update?: EnvironmentVariableUpdateWithWhereUniqueWithoutProjectInput | EnvironmentVariableUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: EnvironmentVariableUpdateManyWithWhereWithoutProjectInput | EnvironmentVariableUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: EnvironmentVariableScalarWhereInput | EnvironmentVariableScalarWhereInput[]
+  }
+
+  export type ProjectCreateNestedOneWithoutEnvVarsInput = {
+    create?: XOR<ProjectCreateWithoutEnvVarsInput, ProjectUncheckedCreateWithoutEnvVarsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutEnvVarsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type ProjectUpdateOneRequiredWithoutEnvVarsNestedInput = {
+    create?: XOR<ProjectCreateWithoutEnvVarsInput, ProjectUncheckedCreateWithoutEnvVarsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutEnvVarsInput
+    upsert?: ProjectUpsertWithoutEnvVarsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutEnvVarsInput, ProjectUpdateWithoutEnvVarsInput>, ProjectUncheckedUpdateWithoutEnvVarsInput>
+  }
+
+  export type ProjectCreateNestedOneWithoutDeploymentsInput = {
+    create?: XOR<ProjectCreateWithoutDeploymentsInput, ProjectUncheckedCreateWithoutDeploymentsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutDeploymentsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type BuildCreateNestedManyWithoutDeploymentInput = {
+    create?: XOR<BuildCreateWithoutDeploymentInput, BuildUncheckedCreateWithoutDeploymentInput> | BuildCreateWithoutDeploymentInput[] | BuildUncheckedCreateWithoutDeploymentInput[]
+    connectOrCreate?: BuildCreateOrConnectWithoutDeploymentInput | BuildCreateOrConnectWithoutDeploymentInput[]
+    createMany?: BuildCreateManyDeploymentInputEnvelope
+    connect?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+  }
+
+  export type BuildUncheckedCreateNestedManyWithoutDeploymentInput = {
+    create?: XOR<BuildCreateWithoutDeploymentInput, BuildUncheckedCreateWithoutDeploymentInput> | BuildCreateWithoutDeploymentInput[] | BuildUncheckedCreateWithoutDeploymentInput[]
+    connectOrCreate?: BuildCreateOrConnectWithoutDeploymentInput | BuildCreateOrConnectWithoutDeploymentInput[]
+    createMany?: BuildCreateManyDeploymentInputEnvelope
+    connect?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+  }
+
+  export type EnumDeploymentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DeploymentStatus
+  }
+
+  export type ProjectUpdateOneRequiredWithoutDeploymentsNestedInput = {
+    create?: XOR<ProjectCreateWithoutDeploymentsInput, ProjectUncheckedCreateWithoutDeploymentsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutDeploymentsInput
+    upsert?: ProjectUpsertWithoutDeploymentsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutDeploymentsInput, ProjectUpdateWithoutDeploymentsInput>, ProjectUncheckedUpdateWithoutDeploymentsInput>
+  }
+
+  export type BuildUpdateManyWithoutDeploymentNestedInput = {
+    create?: XOR<BuildCreateWithoutDeploymentInput, BuildUncheckedCreateWithoutDeploymentInput> | BuildCreateWithoutDeploymentInput[] | BuildUncheckedCreateWithoutDeploymentInput[]
+    connectOrCreate?: BuildCreateOrConnectWithoutDeploymentInput | BuildCreateOrConnectWithoutDeploymentInput[]
+    upsert?: BuildUpsertWithWhereUniqueWithoutDeploymentInput | BuildUpsertWithWhereUniqueWithoutDeploymentInput[]
+    createMany?: BuildCreateManyDeploymentInputEnvelope
+    set?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+    disconnect?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+    delete?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+    connect?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+    update?: BuildUpdateWithWhereUniqueWithoutDeploymentInput | BuildUpdateWithWhereUniqueWithoutDeploymentInput[]
+    updateMany?: BuildUpdateManyWithWhereWithoutDeploymentInput | BuildUpdateManyWithWhereWithoutDeploymentInput[]
+    deleteMany?: BuildScalarWhereInput | BuildScalarWhereInput[]
+  }
+
+  export type BuildUncheckedUpdateManyWithoutDeploymentNestedInput = {
+    create?: XOR<BuildCreateWithoutDeploymentInput, BuildUncheckedCreateWithoutDeploymentInput> | BuildCreateWithoutDeploymentInput[] | BuildUncheckedCreateWithoutDeploymentInput[]
+    connectOrCreate?: BuildCreateOrConnectWithoutDeploymentInput | BuildCreateOrConnectWithoutDeploymentInput[]
+    upsert?: BuildUpsertWithWhereUniqueWithoutDeploymentInput | BuildUpsertWithWhereUniqueWithoutDeploymentInput[]
+    createMany?: BuildCreateManyDeploymentInputEnvelope
+    set?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+    disconnect?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+    delete?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+    connect?: BuildWhereUniqueInput | BuildWhereUniqueInput[]
+    update?: BuildUpdateWithWhereUniqueWithoutDeploymentInput | BuildUpdateWithWhereUniqueWithoutDeploymentInput[]
+    updateMany?: BuildUpdateManyWithWhereWithoutDeploymentInput | BuildUpdateManyWithWhereWithoutDeploymentInput[]
+    deleteMany?: BuildScalarWhereInput | BuildScalarWhereInput[]
+  }
+
+  export type DeploymentCreateNestedOneWithoutBuildsInput = {
+    create?: XOR<DeploymentCreateWithoutBuildsInput, DeploymentUncheckedCreateWithoutBuildsInput>
+    connectOrCreate?: DeploymentCreateOrConnectWithoutBuildsInput
+    connect?: DeploymentWhereUniqueInput
+  }
+
+  export type EnumBuildStatusFieldUpdateOperationsInput = {
+    set?: $Enums.BuildStatus
+  }
+
+  export type DeploymentUpdateOneRequiredWithoutBuildsNestedInput = {
+    create?: XOR<DeploymentCreateWithoutBuildsInput, DeploymentUncheckedCreateWithoutBuildsInput>
+    connectOrCreate?: DeploymentCreateOrConnectWithoutBuildsInput
+    upsert?: DeploymentUpsertWithoutBuildsInput
+    connect?: DeploymentWhereUniqueInput
+    update?: XOR<XOR<DeploymentUpdateToOneWithWhereWithoutBuildsInput, DeploymentUpdateWithoutBuildsInput>, DeploymentUncheckedUpdateWithoutBuildsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -2251,11 +7140,29 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedEnumJobStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.JobStatus | EnumJobStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumJobStatusFilter<$PrismaModel> | $Enums.JobStatus
+  export type NestedBigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -2297,14 +7204,59 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumJobStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.JobStatus | EnumJobStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.JobStatus
+  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumJobStatusFilter<$PrismaModel>
-    _max?: NestedEnumJobStatusFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -2319,6 +7271,539 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDeploymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeploymentStatusFilter<$PrismaModel> | $Enums.DeploymentStatus
+  }
+
+  export type NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeploymentStatus | EnumDeploymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeploymentStatus[] | ListEnumDeploymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeploymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeploymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeploymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumDeploymentStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumBuildStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BuildStatus | EnumBuildStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BuildStatus[] | ListEnumBuildStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BuildStatus[] | ListEnumBuildStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBuildStatusFilter<$PrismaModel> | $Enums.BuildStatus
+  }
+
+  export type NestedEnumBuildStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BuildStatus | EnumBuildStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BuildStatus[] | ListEnumBuildStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BuildStatus[] | ListEnumBuildStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBuildStatusWithAggregatesFilter<$PrismaModel> | $Enums.BuildStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBuildStatusFilter<$PrismaModel>
+    _max?: NestedEnumBuildStatusFilter<$PrismaModel>
+  }
+
+  export type DeploymentCreateWithoutProjectInput = {
+    id?: string
+    status?: $Enums.DeploymentStatus
+    branch?: string
+    commitSha?: string | null
+    commitMessage?: string | null
+    deployedUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    builds?: BuildCreateNestedManyWithoutDeploymentInput
+  }
+
+  export type DeploymentUncheckedCreateWithoutProjectInput = {
+    id?: string
+    status?: $Enums.DeploymentStatus
+    branch?: string
+    commitSha?: string | null
+    commitMessage?: string | null
+    deployedUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    builds?: BuildUncheckedCreateNestedManyWithoutDeploymentInput
+  }
+
+  export type DeploymentCreateOrConnectWithoutProjectInput = {
+    where: DeploymentWhereUniqueInput
+    create: XOR<DeploymentCreateWithoutProjectInput, DeploymentUncheckedCreateWithoutProjectInput>
+  }
+
+  export type DeploymentCreateManyProjectInputEnvelope = {
+    data: DeploymentCreateManyProjectInput | DeploymentCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EnvironmentVariableCreateWithoutProjectInput = {
+    id?: string
+    key: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnvironmentVariableUncheckedCreateWithoutProjectInput = {
+    id?: string
+    key: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnvironmentVariableCreateOrConnectWithoutProjectInput = {
+    where: EnvironmentVariableWhereUniqueInput
+    create: XOR<EnvironmentVariableCreateWithoutProjectInput, EnvironmentVariableUncheckedCreateWithoutProjectInput>
+  }
+
+  export type EnvironmentVariableCreateManyProjectInputEnvelope = {
+    data: EnvironmentVariableCreateManyProjectInput | EnvironmentVariableCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeploymentUpsertWithWhereUniqueWithoutProjectInput = {
+    where: DeploymentWhereUniqueInput
+    update: XOR<DeploymentUpdateWithoutProjectInput, DeploymentUncheckedUpdateWithoutProjectInput>
+    create: XOR<DeploymentCreateWithoutProjectInput, DeploymentUncheckedCreateWithoutProjectInput>
+  }
+
+  export type DeploymentUpdateWithWhereUniqueWithoutProjectInput = {
+    where: DeploymentWhereUniqueInput
+    data: XOR<DeploymentUpdateWithoutProjectInput, DeploymentUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type DeploymentUpdateManyWithWhereWithoutProjectInput = {
+    where: DeploymentScalarWhereInput
+    data: XOR<DeploymentUpdateManyMutationInput, DeploymentUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type DeploymentScalarWhereInput = {
+    AND?: DeploymentScalarWhereInput | DeploymentScalarWhereInput[]
+    OR?: DeploymentScalarWhereInput[]
+    NOT?: DeploymentScalarWhereInput | DeploymentScalarWhereInput[]
+    id?: StringFilter<"Deployment"> | string
+    projectId?: StringFilter<"Deployment"> | string
+    status?: EnumDeploymentStatusFilter<"Deployment"> | $Enums.DeploymentStatus
+    branch?: StringFilter<"Deployment"> | string
+    commitSha?: StringNullableFilter<"Deployment"> | string | null
+    commitMessage?: StringNullableFilter<"Deployment"> | string | null
+    deployedUrl?: StringNullableFilter<"Deployment"> | string | null
+    createdAt?: DateTimeFilter<"Deployment"> | Date | string
+    updatedAt?: DateTimeFilter<"Deployment"> | Date | string
+  }
+
+  export type EnvironmentVariableUpsertWithWhereUniqueWithoutProjectInput = {
+    where: EnvironmentVariableWhereUniqueInput
+    update: XOR<EnvironmentVariableUpdateWithoutProjectInput, EnvironmentVariableUncheckedUpdateWithoutProjectInput>
+    create: XOR<EnvironmentVariableCreateWithoutProjectInput, EnvironmentVariableUncheckedCreateWithoutProjectInput>
+  }
+
+  export type EnvironmentVariableUpdateWithWhereUniqueWithoutProjectInput = {
+    where: EnvironmentVariableWhereUniqueInput
+    data: XOR<EnvironmentVariableUpdateWithoutProjectInput, EnvironmentVariableUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type EnvironmentVariableUpdateManyWithWhereWithoutProjectInput = {
+    where: EnvironmentVariableScalarWhereInput
+    data: XOR<EnvironmentVariableUpdateManyMutationInput, EnvironmentVariableUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type EnvironmentVariableScalarWhereInput = {
+    AND?: EnvironmentVariableScalarWhereInput | EnvironmentVariableScalarWhereInput[]
+    OR?: EnvironmentVariableScalarWhereInput[]
+    NOT?: EnvironmentVariableScalarWhereInput | EnvironmentVariableScalarWhereInput[]
+    id?: StringFilter<"EnvironmentVariable"> | string
+    projectId?: StringFilter<"EnvironmentVariable"> | string
+    key?: StringFilter<"EnvironmentVariable"> | string
+    value?: StringFilter<"EnvironmentVariable"> | string
+    createdAt?: DateTimeFilter<"EnvironmentVariable"> | Date | string
+    updatedAt?: DateTimeFilter<"EnvironmentVariable"> | Date | string
+  }
+
+  export type ProjectCreateWithoutEnvVarsInput = {
+    id?: string
+    userId: string
+    name: string
+    repoUrl: string
+    repoFullName: string
+    repoId: bigint | number
+    defaultBranch?: string
+    deployedUrl?: string | null
+    webhookId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deployments?: DeploymentCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutEnvVarsInput = {
+    id?: string
+    userId: string
+    name: string
+    repoUrl: string
+    repoFullName: string
+    repoId: bigint | number
+    defaultBranch?: string
+    deployedUrl?: string | null
+    webhookId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deployments?: DeploymentUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutEnvVarsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutEnvVarsInput, ProjectUncheckedCreateWithoutEnvVarsInput>
+  }
+
+  export type ProjectUpsertWithoutEnvVarsInput = {
+    update: XOR<ProjectUpdateWithoutEnvVarsInput, ProjectUncheckedUpdateWithoutEnvVarsInput>
+    create: XOR<ProjectCreateWithoutEnvVarsInput, ProjectUncheckedCreateWithoutEnvVarsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutEnvVarsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutEnvVarsInput, ProjectUncheckedUpdateWithoutEnvVarsInput>
+  }
+
+  export type ProjectUpdateWithoutEnvVarsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    repoUrl?: StringFieldUpdateOperationsInput | string
+    repoFullName?: StringFieldUpdateOperationsInput | string
+    repoId?: BigIntFieldUpdateOperationsInput | bigint | number
+    defaultBranch?: StringFieldUpdateOperationsInput | string
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deployments?: DeploymentUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutEnvVarsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    repoUrl?: StringFieldUpdateOperationsInput | string
+    repoFullName?: StringFieldUpdateOperationsInput | string
+    repoId?: BigIntFieldUpdateOperationsInput | bigint | number
+    defaultBranch?: StringFieldUpdateOperationsInput | string
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deployments?: DeploymentUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectCreateWithoutDeploymentsInput = {
+    id?: string
+    userId: string
+    name: string
+    repoUrl: string
+    repoFullName: string
+    repoId: bigint | number
+    defaultBranch?: string
+    deployedUrl?: string | null
+    webhookId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    envVars?: EnvironmentVariableCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutDeploymentsInput = {
+    id?: string
+    userId: string
+    name: string
+    repoUrl: string
+    repoFullName: string
+    repoId: bigint | number
+    defaultBranch?: string
+    deployedUrl?: string | null
+    webhookId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    envVars?: EnvironmentVariableUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutDeploymentsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutDeploymentsInput, ProjectUncheckedCreateWithoutDeploymentsInput>
+  }
+
+  export type BuildCreateWithoutDeploymentInput = {
+    id?: string
+    status?: $Enums.BuildStatus
+    logs?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BuildUncheckedCreateWithoutDeploymentInput = {
+    id?: string
+    status?: $Enums.BuildStatus
+    logs?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BuildCreateOrConnectWithoutDeploymentInput = {
+    where: BuildWhereUniqueInput
+    create: XOR<BuildCreateWithoutDeploymentInput, BuildUncheckedCreateWithoutDeploymentInput>
+  }
+
+  export type BuildCreateManyDeploymentInputEnvelope = {
+    data: BuildCreateManyDeploymentInput | BuildCreateManyDeploymentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProjectUpsertWithoutDeploymentsInput = {
+    update: XOR<ProjectUpdateWithoutDeploymentsInput, ProjectUncheckedUpdateWithoutDeploymentsInput>
+    create: XOR<ProjectCreateWithoutDeploymentsInput, ProjectUncheckedCreateWithoutDeploymentsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutDeploymentsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutDeploymentsInput, ProjectUncheckedUpdateWithoutDeploymentsInput>
+  }
+
+  export type ProjectUpdateWithoutDeploymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    repoUrl?: StringFieldUpdateOperationsInput | string
+    repoFullName?: StringFieldUpdateOperationsInput | string
+    repoId?: BigIntFieldUpdateOperationsInput | bigint | number
+    defaultBranch?: StringFieldUpdateOperationsInput | string
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    envVars?: EnvironmentVariableUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutDeploymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    repoUrl?: StringFieldUpdateOperationsInput | string
+    repoFullName?: StringFieldUpdateOperationsInput | string
+    repoId?: BigIntFieldUpdateOperationsInput | bigint | number
+    defaultBranch?: StringFieldUpdateOperationsInput | string
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    envVars?: EnvironmentVariableUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type BuildUpsertWithWhereUniqueWithoutDeploymentInput = {
+    where: BuildWhereUniqueInput
+    update: XOR<BuildUpdateWithoutDeploymentInput, BuildUncheckedUpdateWithoutDeploymentInput>
+    create: XOR<BuildCreateWithoutDeploymentInput, BuildUncheckedCreateWithoutDeploymentInput>
+  }
+
+  export type BuildUpdateWithWhereUniqueWithoutDeploymentInput = {
+    where: BuildWhereUniqueInput
+    data: XOR<BuildUpdateWithoutDeploymentInput, BuildUncheckedUpdateWithoutDeploymentInput>
+  }
+
+  export type BuildUpdateManyWithWhereWithoutDeploymentInput = {
+    where: BuildScalarWhereInput
+    data: XOR<BuildUpdateManyMutationInput, BuildUncheckedUpdateManyWithoutDeploymentInput>
+  }
+
+  export type BuildScalarWhereInput = {
+    AND?: BuildScalarWhereInput | BuildScalarWhereInput[]
+    OR?: BuildScalarWhereInput[]
+    NOT?: BuildScalarWhereInput | BuildScalarWhereInput[]
+    id?: StringFilter<"Build"> | string
+    deploymentId?: StringFilter<"Build"> | string
+    status?: EnumBuildStatusFilter<"Build"> | $Enums.BuildStatus
+    logs?: StringNullableFilter<"Build"> | string | null
+    createdAt?: DateTimeFilter<"Build"> | Date | string
+    updatedAt?: DateTimeFilter<"Build"> | Date | string
+  }
+
+  export type DeploymentCreateWithoutBuildsInput = {
+    id?: string
+    status?: $Enums.DeploymentStatus
+    branch?: string
+    commitSha?: string | null
+    commitMessage?: string | null
+    deployedUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDeploymentsInput
+  }
+
+  export type DeploymentUncheckedCreateWithoutBuildsInput = {
+    id?: string
+    projectId: string
+    status?: $Enums.DeploymentStatus
+    branch?: string
+    commitSha?: string | null
+    commitMessage?: string | null
+    deployedUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeploymentCreateOrConnectWithoutBuildsInput = {
+    where: DeploymentWhereUniqueInput
+    create: XOR<DeploymentCreateWithoutBuildsInput, DeploymentUncheckedCreateWithoutBuildsInput>
+  }
+
+  export type DeploymentUpsertWithoutBuildsInput = {
+    update: XOR<DeploymentUpdateWithoutBuildsInput, DeploymentUncheckedUpdateWithoutBuildsInput>
+    create: XOR<DeploymentCreateWithoutBuildsInput, DeploymentUncheckedCreateWithoutBuildsInput>
+    where?: DeploymentWhereInput
+  }
+
+  export type DeploymentUpdateToOneWithWhereWithoutBuildsInput = {
+    where?: DeploymentWhereInput
+    data: XOR<DeploymentUpdateWithoutBuildsInput, DeploymentUncheckedUpdateWithoutBuildsInput>
+  }
+
+  export type DeploymentUpdateWithoutBuildsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDeploymentsNestedInput
+  }
+
+  export type DeploymentUncheckedUpdateWithoutBuildsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeploymentCreateManyProjectInput = {
+    id?: string
+    status?: $Enums.DeploymentStatus
+    branch?: string
+    commitSha?: string | null
+    commitMessage?: string | null
+    deployedUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnvironmentVariableCreateManyProjectInput = {
+    id?: string
+    key: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeploymentUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    builds?: BuildUpdateManyWithoutDeploymentNestedInput
+  }
+
+  export type DeploymentUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    builds?: BuildUncheckedUpdateManyWithoutDeploymentNestedInput
+  }
+
+  export type DeploymentUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeploymentStatusFieldUpdateOperationsInput | $Enums.DeploymentStatus
+    branch?: StringFieldUpdateOperationsInput | string
+    commitSha?: NullableStringFieldUpdateOperationsInput | string | null
+    commitMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    deployedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnvironmentVariableUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnvironmentVariableUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnvironmentVariableUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BuildCreateManyDeploymentInput = {
+    id?: string
+    status?: $Enums.BuildStatus
+    logs?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BuildUpdateWithoutDeploymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBuildStatusFieldUpdateOperationsInput | $Enums.BuildStatus
+    logs?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BuildUncheckedUpdateWithoutDeploymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBuildStatusFieldUpdateOperationsInput | $Enums.BuildStatus
+    logs?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BuildUncheckedUpdateManyWithoutDeploymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBuildStatusFieldUpdateOperationsInput | $Enums.BuildStatus
+    logs?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

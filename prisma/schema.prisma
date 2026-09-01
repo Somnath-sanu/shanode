@@ -7,18 +7,81 @@ datasource db {
   provider = "postgresql"
 }
 
-enum JobStatus {
+enum DeploymentStatus {
   QUEUED
   BUILDING
   SUCCESS
   FAILED
 }
 
-model Job {
-  id       String    @id @default(cuid())
-  status    JobStatus @default(QUEUED)
-  repoUrl   String
+enum BuildStatus {
+  QUEUED
+  RUNNING
+  SUCCESS
+  FAILED
+}
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+model Project {
+  id            String   @id @default(cuid())
+  userId        String
+  name          String
+  repoUrl       String
+  repoFullName  String
+  repoId        BigInt
+  defaultBranch String   @default("main")
+  deployedUrl   String?
+  webhookId     String?
+
+  deployments Deployment[]
+  envVars     EnvironmentVariable[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model EnvironmentVariable {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  key       String
+  value     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([projectId, key])
+  @@index([projectId])
+}
+
+model Deployment {
+  id            String           @id @default(cuid())
+  projectId     String
+  project       Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  status        DeploymentStatus @default(QUEUED)
+  branch        String           @default("main")
+  commitSha     String?
+  commitMessage String?
+  deployedUrl   String?
+
+  builds Build[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+}
+
+model Build {
+  id           String         @id @default(cuid())
+  deploymentId String
+  deployment   Deployment     @relation(fields: [deploymentId], references: [id], onDelete: Cascade)
+  status       BuildStatus    @default(QUEUED)
+  logs         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([deploymentId])
 }
